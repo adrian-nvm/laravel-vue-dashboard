@@ -1,0 +1,1 @@
+import{_ as a,c as t,o as s,b as n}from"./app-AniJlIbw.js";const o={name:"404"};function r(c,e,l,p,_,d){return s(),t("div",null,[...e[0]||(e[0]=[n("h1",{class:"h3 mb-4 text-gray-800"},"Blank Page",-1)])])}const m=a(o,[["render",r]]);export{m as default};

@@ -4,16 +4,22 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require("./bootstrap");
+import "./bootstrap";
 
+import { createApp } from "vue";
+import '../sass/app.scss';
 import router from "./router";
 import "./axios";
 import store from "./vuex";
-import Toasted from "vue-toasted";
-import Chart from "chart.js";
+import Chart from "chart.js/auto"; // Use 'chart.js/auto' for automatic registration of controllers, elements, scales and plugins
+window.Chart = Chart; // Expose Chart globally
+import Toast, { POSITION } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
-window.Vue = require("vue").default;
-Vue.use(Toasted);
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.font.family = 'Nunito,-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.color = '#858796';
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -25,7 +31,7 @@ Vue.use(Toasted);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component("app", require("./App.vue").default);
+// Vue.component("app", require("./App.vue").default); // Replaced with createApp.component for Vue 3
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,8 +39,31 @@ Vue.component("app", require("./App.vue").default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    router,
-    store,
-    el: "#app"
+import QrisLineChart from './components/charts/QrisLineChart.vue';
+import QrisHanaChart from './components/charts/QrisHanaChart.vue';
+import BillerLineChart from './components/charts/BillerLineChart.vue';
+import BillerHanaChart from './components/charts/BillerHanaChart.vue';
+import DebitLineChart from './components/charts/DebitLineChart.vue';
+import DebitHanaChart from './components/charts/DebitHanaChart.vue';
+import ChartSlideshow from './components/charts/ChartSlideshow.vue';
+import CombinedChart from './components/charts/CombinedChart.vue';
+import App from "./App.vue";
+
+const app = createApp(App); // Create Vue 3 app instance
+
+app.component('qris-line-chart', QrisLineChart);
+app.component('qris-hana-chart', QrisHanaChart);
+app.component('biller-line-chart', BillerLineChart);
+app.component('biller-hana-chart', BillerHanaChart);
+app.component('debit-line-chart', DebitLineChart);
+app.component('debit-hana-chart', DebitHanaChart);
+app.component('chart-slideshow', ChartSlideshow);
+app.component('combined-chart', CombinedChart);
+
+app.use(router);
+app.use(store);
+app.use(Toast, {
+    position: POSITION.BOTTOM_CENTER
 });
+
+app.mount("#app"); // Mount the app

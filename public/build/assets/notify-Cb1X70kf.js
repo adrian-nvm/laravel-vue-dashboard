@@ -1,0 +1,2 @@
+function o(e,s){let a=[],n=[];if(e.response.data.errors)n=[].concat.apply([],Object.values(e.response.data.errors)),a=n;else{let r=e.response.data.message||"The given data was invalid.";a.push(r)}s?a.forEach(r=>{s.error(r)}):alert(a.join(`
+`))}function d(e,s){e.response&&e.response.data&&e.response.data.message?s.error(e.response.data.message):e.message?s.error(e.message):s.error("An unexpected error occurred.")}export{o as a,d as h};

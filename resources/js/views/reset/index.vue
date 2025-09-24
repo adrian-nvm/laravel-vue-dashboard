@@ -54,7 +54,7 @@
 <script>
 import axios from "axios"
 import * as notify from "../../utils/notify.js"
-import Nav from '../../components/Nav'
+import Nav from '../../components/Nav.vue'
 
 export default {
   name: "Reset",
@@ -76,15 +76,24 @@ export default {
           token: this.$route.params.token,
         });
 
-        let toast = this.$toasted.show("Password updated successfully", {
-          theme: "toasted-primary",
+        this.$toast.success("Password updated successfully", {
           position: "top-right",
-          duration: 5000,
+          timeout: 5000,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: false,
+          closeButton: "button",
+          icon: true,
+          rtl: false
         });
 
         this.$router.push("/login");
       } catch (error) {
-        notify.authError(error);
+        notify.authError(error, this.$toast);
       }
     },
   },

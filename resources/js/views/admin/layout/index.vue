@@ -23,9 +23,9 @@
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2021</span>
-          </div>
+<div class="copyright text-center my-auto">
+    <span>© Payment and Digital Channel</span>
+</div>
         </div>
       </footer>
       <!-- End of Footer -->
@@ -43,8 +43,8 @@
 import sbadmin2 from "../../../sb-admin-2.js";
 import axios from "axios";
 import { mapGetters } from "vuex";
-import Topbar from "../components/Topbar";
-import Sidebar from "../components/Sidebar";
+import Topbar from "../components/Topbar.vue";
+import Sidebar from "../components/Sidebar.vue";
 
 export default {
   name: "AdminLayout",

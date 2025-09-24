@@ -1,24 +1,34 @@
-export function authError(error) {
+export function authError(error, toast) {
     let errorMessages = [];
     let detailedMessages = [];
-
-    let errorMessage =
-        error.response.data.message || "The given data was invalid.";
-    errorMessages.push(errorMessage);
 
     if (error.response.data.errors) {
         detailedMessages = [].concat.apply(
             [],
             Object.values(error.response.data.errors)
         );
-        errorMessages = errorMessages.concat(detailedMessages);
+        errorMessages = detailedMessages; // Use detailed messages if available
+    } else {
+        let errorMessage =
+            error.response.data.message || "The given data was invalid.";
+        errorMessages.push(errorMessage); // Otherwise, use the general message
     }
 
-    errorMessages.forEach(message => {
-        let toast = Vue.toasted.show(message, {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 5000
+    if (toast) {
+        errorMessages.forEach(message => {
+            toast.error(message);
         });
-    });
+    } else {
+        alert(errorMessages.join("\n")); // Combine all messages into a single alert
+    }
+}
+
+export function handleError(error, toast) {
+    if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+    } else if (error.message) {
+        toast.error(error.message);
+    } else {
+        toast.error("An unexpected error occurred.");
+    }
 }

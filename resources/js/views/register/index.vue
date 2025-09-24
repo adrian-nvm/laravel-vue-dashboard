@@ -90,14 +90,19 @@
 <script>
 import axios from "axios";
 import * as notify from "../../utils/notify.js";
-import Nav from "../../components/Nav";
-import LoadingButton from "../../components/LoadingButton";
+import Nav from "../../components/Nav.vue";
+import LoadingButton from "../../components/LoadingButton.vue";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "Register",
   components: {
     Nav,
     LoadingButton,
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   data() {
     return {
@@ -128,15 +133,24 @@ export default {
         } else {
           let message =
             "Your account has been created successfully. Please Log in.";
-          let toast = Vue.toasted.show(message, {
-            theme: "toasted-primary",
+          this.toast.success(message, {
             position: "top-right",
-            duration: 5000,
+            timeout: 5000,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: false,
+            closeButton: "button",
+            icon: true,
+            rtl: false
           });
           this.$router.push("/login");
         }
       } catch (error) {
-        notify.authError(error);
+        notify.authError(error, this.toast);
         this.isLoading = false;
       }
     },

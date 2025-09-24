@@ -1,14 +1,11 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
-
-Vue.use(Vuex);
 
 const state = {
     user: null
 };
 
-const store = new Vuex.Store({
+const store = createStore({
     state,
     getters: {
         user: (state) => {

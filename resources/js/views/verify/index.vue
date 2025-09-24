@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import Nav from "../../components/Nav";
-import LoadingButton from "../../components/LoadingButton";
+import Nav from "../../components/Nav.vue";
+import LoadingButton from "../../components/LoadingButton.vue";
 
 export default {
   name: "Verify",

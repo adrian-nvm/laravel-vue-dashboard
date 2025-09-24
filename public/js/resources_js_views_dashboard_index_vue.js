@@ -1126,7 +1126,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
   null,
   null,
   null
-  
+
 )
 
 /* hot reload */
@@ -1148,7 +1148,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/dashboard/index.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default);
 
 /***/ }),
 
@@ -1207,8 +1207,8 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "sidebar-brand-text mx-3" }, [
-              _vm._v("SB Admin "),
-              _c("sup", [_vm._v("2")])
+              _vm._v("PDC")
+            //   ,_c("sup", [_vm._v("2")])
             ])
           ]
         ),
@@ -1299,7 +1299,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("img", {
                         staticClass: "img-profile rounded-circle",
-                        attrs: { src: "img/undraw_profile.svg" }
+                        attrs: { src: "images/undraw.png" }
                       })
                     ]
                   ),
@@ -1997,7 +1997,7 @@ var staticRenderFns = [
                 _c("img", {
                   staticClass: "rounded-circle",
                   attrs: {
-                    src: "https://source.unsplash.com/Mv9hjnEUHR4/60x60",
+                    src: "/images/pdc-icon.png",
                     alt: "..."
                   }
                 }),
@@ -2784,7 +2784,7 @@ var staticRenderFns = [
     return _c("footer", { staticClass: "sticky-footer bg-white" }, [
       _c("div", { staticClass: "container my-auto" }, [
         _c("div", { staticClass: "copyright text-center my-auto" }, [
-          _c("span", [_vm._v("Copyright © Your Website 2021")])
+          _c("span", [_vm._v("© Payment and Digital Channel")])
         ])
       ])
     ])

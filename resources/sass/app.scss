@@ -1,11 +1,23 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// import custom css
-@import '../css/app.css';
+$fa-font-path: "/fonts";
 
-@import '~@fortawesome/fontawesome-free/scss/brands';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~startbootstrap-sb-admin-2/scss/sb-admin-2.scss';
+@import 'resources/sass/_fontawesome_custom.scss';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/brands';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/regular';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/solid';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+@import 'node_modules/startbootstrap-sb-admin-2/scss/sb-admin-2.scss';
+
+.nav-item {
+    .router-link-exact-active {
+        &.nav-link {
+            font-weight: bold;
+            color: #fff;
+        }
+        &.collapse-item {
+            font-weight: bold;
+        }
+    }
+}

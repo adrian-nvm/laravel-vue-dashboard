@@ -69,14 +69,18 @@
 
 <script>
 import * as notify from "../../utils/notify.js";
-import Nav from "../../components/Nav";
-import LoadingButton from "../../components/LoadingButton";
-
+import Nav from "../../components/Nav.vue";
+import LoadingButton from "../../components/LoadingButton.vue";
+import { useToast } from "vue-toastification";
 export default {
   name: "Forgot",
   components: {
     Nav,
     LoadingButton,
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   data() {
     return {
@@ -95,7 +99,7 @@ export default {
         this.isLoading = false;
         this.emailSent = true;
       } catch (error) {
-        notify.authError(error);
+        notify.authError(error, this.toast);
         this.isLoading = false;
       }
     },

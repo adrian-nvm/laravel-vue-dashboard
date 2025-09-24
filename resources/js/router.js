@@ -1,21 +1,16 @@
-import Vue from "vue";
-
-import Router from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 import store from "./vuex";
-import AdminLayout from "./views/admin/layout/index";
+import AdminLayout from "./views/admin/layout/index.vue";
 
-Vue.use(Router);
-
-let router = new Router({
-    mode: "history",
+const router = createRouter({
+    history: createWebHistory(),
     routes: [
         {
-            path: "/",
-            name: "home",
-            component: () => import("./views/home/index.vue")
+            path: '/',
+            redirect: '/login'
         },
         {
-            path: "/login/:user_id?",
+            path: "/login",
             name: "login",
             component: () => import("./views/login/index.vue")
         },
@@ -140,6 +135,107 @@ let router = new Router({
             meta: {
                 requiresAuth: true,
                 layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/qris-data-form",
+            name: "admin.qris-data-form",
+            component: () => import("./views/admin/qris/QrisDataForm.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/reports/qris-data",
+            name: "admin.reports.qris-data",
+            component: () => import("./views/admin/qris/QrisDataReport.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/biller-data-form",
+            name: "admin.biller-data-form",
+            component: () => import("./views/admin/biller/BillerDataForm.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/reports/biller-data",
+            name: "admin.reports.biller-data",
+            component: () => import("./views/admin/biller/BillerDataReport.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/debit-data-form",
+            name: "admin.debit-data-form",
+            component: () => import("./views/admin/debit/DebitDataForm.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/reports/debit-data",
+            name: "admin.reports.debit-data",
+            component: () => import("./views/admin/debit/DebitDataReport.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/combined-chart",
+            name: "admin.combined-chart",
+            component: () => import("./views/admin/CombinedChartPage.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/chart/qris-line",
+            name: "qris-line-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
+            path: "/chart/qris-hana",
+            name: "qris-hana-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
+            path: "/chart/biller-line",
+            name: "biller-line-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
+            path: "/chart/biller-hana",
+            name: "biller-hana-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
+            path: "/chart/debit-line",
+            name: "debit-line-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
+            path: "/chart/debit-hana",
+            name: "debit-hana-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
+            path: "/:pathMatch(.*)*",
+            name: "not-found",
+            component: () => import("./views/admin/page-not-found.vue"),
+            meta: {
+                requiresAuth: true
             }
         }
     ]

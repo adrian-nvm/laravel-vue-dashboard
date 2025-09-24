@@ -29,7 +29,7 @@
         navbar-search
       "
     >
-      <div class="input-group">
+      <!-- <div class="input-group">
         <input
           type="text"
           class="form-control bg-light border-0 small"
@@ -42,7 +42,7 @@
             <i class="fas fa-search fa-sm"></i>
           </button>
         </div>
-      </div>
+      </div> -->
     </form>
 
     <!-- Topbar Navbar -->
@@ -66,7 +66,7 @@
           aria-labelledby="searchDropdown"
         >
           <form class="form-inline mr-auto w-100 navbar-search">
-            <div class="input-group">
+            <!-- <div class="input-group">
               <input
                 type="text"
                 class="form-control bg-light border-0 small"
@@ -79,7 +79,7 @@
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
-            </div>
+            </div> -->
           </form>
         </div>
       </li>
@@ -231,7 +231,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                src="/images/pdc-icon.png"
                 alt="..."
               />
               <div class="status-indicator bg-success"></div>
@@ -253,7 +253,7 @@
       <div class="topbar-divider d-none d-sm-block"></div>
 
       <!-- Nav Item - User Information -->
-      <li class="nav-item dropdown no-arrow">
+      <li class="nav-item dropdown no-arrow" v-if="user">
         <a
           class="nav-link dropdown-toggle"
           href="#"
@@ -268,7 +268,7 @@
           >
           <img
             class="img-profile rounded-circle"
-            src="img/undraw_profile.svg"
+            src="images/undraw.png"
           />
         </a>
         <!-- Dropdown - User Information -->
@@ -300,6 +300,9 @@
             Logout
           </a>
         </div>
+      </li>
+      <li class="nav-item dropdown no-arrow" v-else>
+        <router-link to="/login" class="nav-link">Login</router-link>
       </li>
     </ul>
   </div>

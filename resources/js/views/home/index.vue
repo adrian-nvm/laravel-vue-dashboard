@@ -4,7 +4,7 @@
     <div class="masthead">
       <div class="text-center text-white">
         <h1 class="py-5 home-title">
-          Welcome to Laravel 8 & Vue.js Admin Dashboard
+          Payment and Digital Channel Admin Dashboard
         </h1>
       </div>
     </div>
@@ -20,14 +20,27 @@
 </template>
 
 <script>
-import Nav from "../../components/Nav";
-import Footer from "../../components/Footer";
+import Nav from "../../components/Nav.vue";
+import Footer from "../../components/Footer.vue";
+
+import QrisLineChart from '../../components/charts/QrisLineChart.vue';
+import QrisHanaChart from '../../components/charts/QrisHanaChart.vue';
+import BillerLineChart from '../../components/charts/BillerLineChart.vue';
+import BillerHanaChart from '../../components/charts/BillerHanaChart.vue';
+import DebitLineChart from '../../components/charts/DebitLineChart.vue';
+import DebitHanaChart from '../../components/charts/DebitHanaChart.vue';
 
 export default {
   name: "Home",
   components: {
     Nav,
     Footer,
+    QrisLineChart,
+    QrisHanaChart,
+    BillerLineChart,
+    BillerHanaChart,
+    DebitLineChart,
+    DebitHanaChart,
   },
 };
 </script>

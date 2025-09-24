@@ -101,13 +101,18 @@
 
 <script>
 import axios from "axios";
-import Nav from "../../components/Nav";
+import Nav from "../../components/Nav.vue";
 import * as notify from "../../utils/notify.js";
+import { useToast } from "vue-toastification";
 
 export default {
   name: "Login",
   components: {
     Nav,
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   },
   data() {
     return {
@@ -142,7 +147,7 @@ export default {
         this.$store.dispatch("user", response.data.user);
         this.$router.push("/admin");
       } catch (error) {
-        notify.authError(error);
+        notify.authError(error, this.toast);
       }
     },
   },
