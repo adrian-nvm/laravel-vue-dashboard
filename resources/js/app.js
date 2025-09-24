@@ -11,14 +11,8 @@ import '../sass/app.scss';
 import router from "./router";
 import "./axios";
 import store from "./vuex";
-import Chart from "chart.js/auto"; // Use 'chart.js/auto' for automatic registration of controllers, elements, scales and plugins
-window.Chart = Chart; // Expose Chart globally
 import Toast, { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
-
-// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.font.family = 'Nunito,-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.color = '#858796';
 
 /**
  * The following block of code may be used to automatically register your

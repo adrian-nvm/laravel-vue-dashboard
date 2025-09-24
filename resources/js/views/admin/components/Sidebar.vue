@@ -151,66 +151,9 @@
         >
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Charts:</h6>
-            <!-- QRIS -->
-            <a
-              class="collapse-item"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseQris"
-              aria-expanded="true"
-              aria-controls="collapseQris"
-              >QRIS</a
+            <router-link class="collapse-item" to="/charts" target="_blank"
+              >Charts</router-link
             >
-            <div id="collapseQris" class="collapse" data-parent="#collapseCharts">
-              <div class="bg-white py-2 collapse-inner rounded">
-                <router-link class="collapse-item" to="/chart/qris-line" target="_blank"
-                  >QRIS Line</router-link
-                >
-                <router-link class="collapse-item" to="/chart/qris-hana" target="_blank"
-                  >QRIS Hana</router-link
-                >
-              </div>
-            </div>
-            <!-- Biller -->
-            <a
-              class="collapse-item"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseBiller"
-              aria-expanded="true"
-              aria-controls="collapseBiller"
-              >Biller</a
-            >
-            <div id="collapseBiller" class="collapse" data-parent="#collapseCharts">
-              <div class="bg-white py-2 collapse-inner rounded">
-                <router-link class="collapse-item" to="/chart/biller-line" target="_blank"
-                  >Biller Line</router-link
-                >
-                <router-link class="collapse-item" to="/chart/biller-hana" target="_blank"
-                  >Biller Hana</router-link
-                >
-              </div>
-            </div>
-            <!-- Debit -->
-            <a
-              class="collapse-item"
-              href="#"
-              data-toggle="collapse"
-              data-target="#collapseDebit"
-              aria-expanded="true"
-              aria-controls="collapseDebit"
-              >Debit</a
-            >
-            <div id="collapseDebit" class="collapse" data-parent="#collapseCharts">
-              <div class="bg-white py-2 collapse-inner rounded">
-                <router-link class="collapse-item" to="/chart/debit-line" target="_blank"
-                  >Debit Line</router-link
-                >
-                <router-link class="collapse-item" to="/chart/debit-hana" target="_blank"
-                  >Debit Hana</router-link
-                >
-              </div>
-            </div>
             <router-link class="collapse-item" to="/chart/slideshow" target="_blank"
               >Slideshow</router-link
             >

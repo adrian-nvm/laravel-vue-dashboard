@@ -24,9 +24,9 @@ class ChartSlideshowController extends Controller
         $debitResponse = $debitChartController->getChartData($request);
 
         // Get the data from the responses
-        $qrisChartData = json_decode($qrisResponse->getContent(), true);
-        $billerChartData = json_decode($billerResponse->getContent(), true);
-        $debitChartData = json_decode($debitResponse->getContent(), true);
+        $qrisChartData = $qrisResponse->getData(true);
+        $billerChartData = $billerResponse->getData(true);
+        $debitChartData = $debitResponse->getData(true);
 
         // Combine all chart data into a single array
         $combinedChartData = [

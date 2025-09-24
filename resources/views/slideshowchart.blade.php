@@ -2,9 +2,12 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1>Slide Show Charts</h1>
-        <div id="app">
-            <chart-slideshow :data='@json($chartData ?? [])'></chart-slideshow>
-        </div>
+        <router-view></router-view>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    window.chartData = @json($chartData ?? []);
+</script>
+@endpush

@@ -17,17 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/chart/qris-line', [QrisChartController::class, 'showLineChart'])->name('qris.qrislinechart');
-Route::get('/chart/qris-hana', [QrisChartController::class, 'showHanaChart'])->name('qris.qrishanachart');
+Route::get('/chart/slideshow', [\App\Http\Controllers\Chart\ChartSlideshowController::class, 'showSlideshow'])->name('chart.slideshow');
 
-Route::get('/chart/biller-line', [BillerChartController::class, 'showLineChart'])->name('biller.billerlinechart');
-Route::get('/chart/biller-hana', [BillerChartController::class, 'showHanaChart'])->name('biller.billerhanachart');
-
-Route::get('/chart/debit-line', [DebitChartController::class, 'showLineChart'])->name('debit.debitlinechart');
-Route::get('/chart/debit-hana', [DebitChartController::class, 'showHanaChart'])->name('debit.debithanachart');
-
-Route::get('/chart/slideshow', [ChartSlideshowController::class, 'showSlideshow'])->name('chart.slideshow');
-
+Route::get('/login', function () {
+    return view('welcome');
+})->name('login');
 
 Route::get('/{any?}', function () {
     return view('welcome');

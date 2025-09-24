@@ -47,24 +47,10 @@ class DebitChartController extends Controller
     }
     public function showLineChart(Request $request)
     {
-        // Call the getChartData method
-        $response = $this->getChartData($request);
-
-        // Get the data from the response
-        $chartData = json_decode($response->getContent(), true);
-
-        // Pass the data to the view
-        return view('debit.debitlinechart', ['chartData' => $chartData]);
+        return $this->getChartData($request);
     }
     public function showHanaChart(Request $request)
     {
-        // Call the getChartData method
-        $response = $this->getChartData($request);
-
-        // Get the data from the response
-        $chartData = json_decode($response->getContent(), true);
-
-        // Pass the data to the view
-        return view('debit.debithanachart', ['chartData' => $chartData]);
+        return $this->getChartData($request);
     }
 }

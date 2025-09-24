@@ -201,6 +201,22 @@ const router = createRouter({
             }
         },
         {
+            path: "/charts",
+            name: "charts",
+            component: () => import("./views/admin/charts.vue"),
+        },
+        {
+            path: "/chart/slideshow",
+            name: "chart-slideshow",
+            component: () => import("./components/charts/ChartSlideshow.vue"),
+            props: true
+        },
+        {
+            path: "/chart/qris-line",
+            name: "qris-line-chart",
+            component: () => import("./views/admin/charts.vue")
+        },
+        {
             path: "/chart/qris-line",
             name: "qris-line-chart",
             component: () => import("./views/admin/charts.vue")

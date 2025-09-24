@@ -26,7 +26,12 @@
             <h6 class="m-0 font-weight-bold text-primary">{{ selectedChartTitle }}</h6>
           </div>
           <div class="card-body">
-            <component :is="selectedChart" :data="chartData" v-if="chartData.length" />
+            <div v-if="loading" class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <component :is="selectedChart" :key="selectedChart" :data="chartData" v-if="!loading && chartData.length" />
           </div>
         </div>
       </div>
@@ -57,6 +62,7 @@ export default {
     return {
       selectedChart: 'QrisLineChart',
       chartData: [],
+      loading: false,
       chartTitles: {
         QrisLineChart: 'QRIS Line Chart',
         QrisHanaChart: 'QRIS MyHana Chart',
@@ -80,14 +86,22 @@ export default {
   },
   methods: {
     async fetchChartData() {
+      this.loading = true;
+      this.chartData = []; // Clear data to unmount the old chart
       const endpoint = this.getEndpointForChart(this.selectedChart);
       if (endpoint) {
         try {
+          // Wait for the DOM to update before fetching new data
+          await this.$nextTick();
           const response = await axios.get(endpoint);
           this.chartData = response.data;
         } catch (error) {
           console.error('Error fetching chart data:', error);
+        } finally {
+          this.loading = false;
         }
+      } else {
+        this.loading = false;
       }
     },
     getEndpointForChart(chartName) {

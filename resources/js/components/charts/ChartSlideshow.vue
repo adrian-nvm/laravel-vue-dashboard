@@ -25,15 +25,9 @@
 
 <script>
 export default {
-    props: {
-        data: {
-            type: Object,
-            required: true
-        }
-    },
     data() {
         return {
-            chartData: this.data,
+            chartData: window.chartData || {},
             charts: [
                 { group: 'qris', type: 'line' },
                 { group: 'qris', type: 'hana' },

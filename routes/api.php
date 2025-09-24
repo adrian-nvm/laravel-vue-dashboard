@@ -7,6 +7,9 @@ use App\Http\Controllers\Form\QrisDataController;
 use App\Http\Controllers\Form\BillerDataController;
 use App\Http\Controllers\Form\DebitDataController;
 use App\Http\Controllers\Chart\ChartSlideshowController;
+use App\Http\Controllers\Chart\QrisChartController;
+use App\Http\Controllers\Chart\BillerChartController;
+use App\Http\Controllers\Chart\DebitChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,3 +54,11 @@ Route::get('charts/slideshow', [ChartSlideshowController::class, 'getChartData']
 
 // Combined Chart Route
 Route::post('combined-chart', [App\Http\Controllers\Chart\CombinedChartController::class, 'fetchData'])->middleware('auth:api');
+
+// Chart Data Routes
+Route::get('chart/qris-line', [QrisChartController::class, 'showLineChart'])->middleware('auth:api');
+Route::get('chart/qris-hana', [QrisChartController::class, 'showHanaChart'])->middleware('auth:api');
+Route::get('chart/biller-line', [BillerChartController::class, 'showLineChart'])->middleware('auth:api');
+Route::get('chart/biller-hana', [BillerChartController::class, 'showHanaChart'])->middleware('auth:api');
+Route::get('chart/debit-line', [DebitChartController::class, 'showLineChart'])->middleware('auth:api');
+Route::get('chart/debit-hana', [DebitChartController::class, 'showHanaChart'])->middleware('auth:api');
