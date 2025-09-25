@@ -1,13 +1,26 @@
 <template>
   <div>
     <div class="row mb-3">
-      <div class="col-md-12">
-        <div v-for="group in chartOptions" :key="group.group" class="mb-2">
-          <h6>{{ group.group.replace(/-----/g, '').trim() }}</h6>
+      <div class="col-md-6">
+        <h5>LineBank</h5>
+        <div v-for="group in lineBankChartOptions" :key="group.group" class="mb-2">
+          <h6>{{ group.group.replace(/-----|LineBank/g, '').trim() }}</h6>
           <div class="d-flex flex-wrap">
             <div class="form-check form-check-inline mr-3" v-for="option in group.options" :key="option">
-              <input class="form-check-input" type="checkbox" :id="option" :value="option" v-model="selectedCharts" @change="updateChart">
-              <label class="form-check-label" :for="option">{{ option.replace(/_/g, ' ') }}</label>
+              <input class="form-check-input" type="checkbox" :id="option" :value="option" v-model="selectedCharts" @change="debouncedUpdateChart" :disabled="isLoading">
+              <label class="form-check-label" :for="option">{{ option.replace(/_/g, ' ').replace('LineBank', '') }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h5>HanaBank</h5>
+        <div v-for="group in hanaBankChartOptions" :key="group.group" class="mb-2">
+          <h6>{{ group.group.replace(/-----|HanaBank/g, '').trim() }}</h6>
+          <div class="d-flex flex-wrap">
+            <div class="form-check form-check-inline mr-3" v-for="option in group.options" :key="option">
+              <input class="form-check-input" type="checkbox" :id="option" :value="option" v-model="selectedCharts" @change="debouncedUpdateChart" :disabled="isLoading">
+              <label class="form-check-label" :for="option">{{ option.replace(/_/g, ' ').replace('HanaBank', '') }}</label>
             </div>
           </div>
         </div>
@@ -15,10 +28,10 @@
     </div>
     <div class="row mb-3">
       <div class="col-md-2">
-        <input type="month" class="form-control" v-model="startMonth" @change="updateChart" :disabled="isLoading">
+        <input type="month" class="form-control" v-model="startMonth" @change="debouncedUpdateChart" :disabled="isLoading">
       </div>
       <div class="col-md-2">
-        <input type="month" class="form-control" v-model="endMonth" @change="updateChart" :disabled="isLoading">
+        <input type="month" class="form-control" v-model="endMonth" @change="debouncedUpdateChart" :disabled="isLoading">
       </div>
       <div class="col-md-2">
         <button class="btn btn-primary w-100" @click="updateChart" :disabled="isLoading">Filter</button>
@@ -57,6 +70,7 @@ export default {
       selectedCharts: [],
       startMonth: '',
       endMonth: '',
+      debounceTimeout: null,
       chartOptions: [
         {
           group: '----- LineBank - Volume -----',
@@ -99,13 +113,23 @@ export default {
           ]
         },
         {
-          group: '----- Unique CIF -----',
+          group: 'LineBank - Unique CIF',
           options: [
             'Qris_Unique_CIF',
             'Debit_Unique_CIF',
             'Biller_Unique_CIF',
             'Bifast_Unique_CIF',
             'Rtol_Unique_CIF',
+          ]
+        },
+        {
+          group: 'HanaBank - Unique CIF',
+          options: [
+            'Qris_HanaBank_Unique_CIF',
+            'Debit_HanaBank_Unique_CIF',
+            'Biller_HanaBank_Unique_CIF',
+            'Bifast_HanaBank_Unique_CIF',
+            'Rtol_HanaBank_Unique_CIF',
           ]
         }
       ],
@@ -115,11 +139,28 @@ export default {
       },
     };
   },
+  computed: {
+    lineBankChartOptions() {
+      return this.chartOptions.filter(group => group.group.includes('LineBank'));
+    },
+    hanaBankChartOptions() {
+      return this.chartOptions.filter(group => group.group.includes('HanaBank'));
+    },
+    uniqueCifChartOptions() {
+      return this.chartOptions.filter(group => group.group.includes('Unique CIF'));
+    }
+  },
   mounted() {
     Chart.register(trendline, ChartDataLabels);
     this.createChart();
   },
   methods: {
+    debouncedUpdateChart() {
+      clearTimeout(this.debounceTimeout);
+      this.debounceTimeout = setTimeout(() => {
+        this.updateChart();
+      }, 500);
+    },
     createChart() {
       if (this.chart) {
         this.chart.destroy();
@@ -156,10 +197,20 @@ export default {
               anchor: (context) => {
                 return context.dataset.type === 'bar' ? 'center' : 'end';
               },
+              backgroundColor: (context) => {
+                return context.dataset.backgroundColor;
+              },
+              borderRadius: 4,
               color: 'black',
               font: {
                 weight: 'bold'
               },
+              padding: {
+                top: 4,
+                bottom: 4,
+                left: 8,
+                right: 8
+              }
             },
           },
           scales: {

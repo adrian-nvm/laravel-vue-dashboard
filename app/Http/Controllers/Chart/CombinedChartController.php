@@ -19,11 +19,11 @@ class CombinedChartController extends Controller
         $startDate = $startMonth ? Carbon::parse($startMonth)->startOfMonth()->toDateString() : null;
         $endDate = $endMonth ? Carbon::parse($endMonth)->endOfMonth()->toDateString() : null;
 
-        $qrisQuery = DB::table('monthly_qris_trx')->select('START_DT', 'QRIS_TRX_AMT', 'QRIS_TRX_FREQ', 'QRIS_MYHANA_TRX_AMT', 'QRIS_MYHANA_TRX_FREQ', 'QRIS_UNIQUE_CIF_QTY');
-        $debitQuery = DB::table('monthly_debit_trx')->select('START_DT', 'DEBIT_TRX_AMT', 'DEBIT_TRX_FREQ', 'DEBIT_MYHANA_TRX_AMT', 'DEBIT_MYHANA_TRX_FREQ', 'DEBIT_UNIQUE_CIF_QTY');
-        $billerQuery = DB::table('monthly_bill_trx')->select('START_DT', 'BILL_TRX_AMT', 'BILL_TRX_FREQ', 'BILL_MYHANA_TRX_AMT', 'BILL_MYHANA_TRX_FREQ', 'BILL_UNIQUE_CIF_QTY');
-        $bifastQuery = DB::table('monthly_bifast_trx')->select('START_DT', 'BIFAST_TRX_AMT', 'BIFAST_TRX_FREQ', 'BIFAST_MYHANA_TRX_AMT', 'BIFAST_MYHANA_TRX_FREQ', 'BIFAST_UNIQUE_CIF_QTY');
-        $rtolQuery = DB::table('monthly_trf_trx')->select('START_DT', 'TRF_OUT_TRX_AMT', 'TRF_OUT_TRX_FREQ', 'TRF_OUT_MYHANA_TRX_AMT', 'TRF_OUT_MYHANA_TRX_FREQ', 'TRF_OUT_UNIQUE_CIF_QTY');
+        $qrisQuery = DB::table('monthly_qris_trx')->select('START_DT', 'QRIS_TRX_AMT', 'QRIS_TRX_FREQ', 'QRIS_MYHANA_TRX_AMT', 'QRIS_MYHANA_TRX_FREQ', 'QRIS_UNIQUE_CIF_QTY', 'QRIS_MYHANA_UNIQUE_CIF_QTY');
+        $debitQuery = DB::table('monthly_debit_trx')->select('START_DT', 'DEBIT_TRX_AMT', 'DEBIT_TRX_FREQ', 'DEBIT_MYHANA_TRX_AMT', 'DEBIT_MYHANA_TRX_FREQ', 'DEBIT_UNIQUE_CIF_QTY', 'DEBIT_MYHANA_UNIQUE_CIF_QTY');
+        $billerQuery = DB::table('monthly_bill_trx')->select('START_DT', 'BILL_TRX_AMT', 'BILL_TRX_FREQ', 'BILL_MYHANA_TRX_AMT', 'BILL_MYHANA_TRX_FREQ', 'BILL_UNIQUE_CIF_QTY', 'BILL_MYHANA_UNIQUE_CIF_QTY');
+        $bifastQuery = DB::table('monthly_bifast_trx')->select('START_DT', 'BIFAST_TRX_AMT', 'BIFAST_TRX_FREQ', 'BIFAST_MYHANA_TRX_AMT', 'BIFAST_MYHANA_TRX_FREQ', 'BIFAST_UNIQUE_CIF_QTY', 'BIFAST_MYHANA_UNIQUE_CIF_QTY');
+        $rtolQuery = DB::table('monthly_trf_trx')->select('START_DT', 'TRF_OUT_TRX_AMT', 'TRF_OUT_TRX_FREQ', 'TRF_OUT_MYHANA_TRX_AMT', 'TRF_OUT_MYHANA_TRX_FREQ', 'TRF_OUT_UNIQUE_CIF_QTY', 'TRF_OUT_MYHANA_UNIQUE_CIF_QTY');
 
         if ($startDate || $endDate) {
             if ($startDate) {
@@ -354,6 +354,56 @@ class CombinedChartController extends Controller
                         'data' => $this->prepareData($rtolData, $labels, 'TRF_OUT_UNIQUE_CIF_QTY'),
                         'borderColor' => 'rgba(148, 0, 211, 1)',
                         'backgroundColor' => 'rgba(148, 0, 211, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Qris_HanaBank_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'QRIS HanaBank Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($qrisData, $labels, 'QRIS_MYHANA_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(255, 20, 147, 1)',
+                        'backgroundColor' => 'rgba(255, 20, 147, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Debit_HanaBank_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'Debit HanaBank Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($debitData, $labels, 'DEBIT_MYHANA_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(0, 191, 255, 1)',
+                        'backgroundColor' => 'rgba(0, 191, 255, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Biller_HanaBank_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'Biller HanaBank Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($billerData, $labels, 'BILL_MYHANA_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(255, 105, 180, 1)',
+                        'backgroundColor' => 'rgba(255, 105, 180, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Bifast_HanaBank_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'BI-Fast HanaBank Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($bifastData, $labels, 'BIFAST_MYHANA_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(123, 104, 238, 1)',
+                        'backgroundColor' => 'rgba(123, 104, 238, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Rtol_HanaBank_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'RTOL Out - HanaBank Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($rtolData, $labels, 'TRF_OUT_MYHANA_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(64, 224, 208, 1)',
+                        'backgroundColor' => 'rgba(64, 224, 208, 0.2)',
                         'yAxisID' => 'y',
                     ];
                     break;
