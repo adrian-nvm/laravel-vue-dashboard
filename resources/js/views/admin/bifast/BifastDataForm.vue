@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Biller Data Input</h1>
+    <h1 class="h3 mb-4 text-gray-800">Bifast Data Input</h1>
 
     <div class="row">
       <div class="col-lg-12">
@@ -62,24 +62,24 @@
     </div>
 
     <!-- Tab Navigation -->
-    <ul class="nav nav-tabs" id="billerDataTabs" role="tablist">
+    <ul class="nav nav-tabs" id="bifastDataTabs" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="line-tab" data-toggle="tab" data-target="#line" type="button" role="tab" aria-controls="line" aria-selected="true">Biller Line</button>
+        <button class="nav-link active" id="line-tab" data-toggle="tab" data-target="#line" type="button" role="tab" aria-controls="line" aria-selected="true">Bifast Line</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="hana-tab" data-toggle="tab" data-target="#hana" type="button" role="tab" aria-controls="hana" aria-selected="false">Biller MyHana</button>
+        <button class="nav-link" id="hana-tab" data-toggle="tab" data-target="#hana" type="button" role="tab" aria-controls="hana" aria-selected="false">Bifast MyHana</button>
       </li>
     </ul>
 
     <!-- Tab Content -->
-    <div class="tab-content" id="billerDataTabsContent">
-      <!-- Biller Line Tab -->
+    <div class="tab-content" id="bifastDataTabsContent">
+      <!-- Bifast Line Tab -->
       <div class="tab-pane fade show active" id="line" role="tabpanel" aria-labelledby="line-tab">
         <div class="row mt-4">
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Input Biller Line Data</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Input Bifast Line Data</h6>
               </div>
               <div class="card-body">
                 <form @submit.prevent="submitLineForm">
@@ -88,16 +88,16 @@
                     <input type="month" class="form-control" id="lineStartDt" v-model="lineForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="billerTrxFreq">Biller Transaction Frequency</label>
-                    <input type="number" class="form-control" id="billerTrxFreq" v-model.number="lineForm.billerTrxFreq" :disabled="isSubmitting">
+                    <label for="bifastTrxFreq">Bifast Transaction Frequency</label>
+                    <input type="number" class="form-control" id="bifastTrxFreq" v-model.number="lineForm.bifastTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="billerTrxAmt">Biller Transaction Amount</label>
-                    <input type="number" class="form-control" id="billerTrxAmt" v-model.number="lineForm.billerTrxAmt" :disabled="isSubmitting">
+                    <label for="bifastTrxAmt">Bifast Transaction Amount</label>
+                    <input type="number" class="form-control" id="bifastTrxAmt" v-model.number="lineForm.bifastTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="billerUniqueCifQty">Biller Unique CIF Quantity</label>
-                    <input type="number" class="form-control" id="billerUniqueCifQty" v-model.number="lineForm.billerUniqueCifQty" :disabled="isSubmitting">
+                    <label for="bifastUniqueCifQty">Bifast Unique CIF Quantity</label>
+                    <input type="number" class="form-control" id="bifastUniqueCifQty" v-model.number="lineForm.bifastUniqueCifQty" :disabled="isSubmitting">
                   </div>
                   <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Data</button>
                 </form>
@@ -105,18 +105,18 @@
             </div>
           </div>
           <div class="col-lg-12">
-            <BillerLineDataTable ref="billerLineDataTable" />
+            <BifastLineDataTable ref="bifastLineDataTable" />
           </div>
         </div>
       </div>
 
-      <!-- Biller MyHana Tab -->
+      <!-- Bifast MyHana Tab -->
       <div class="tab-pane fade" id="hana" role="tabpanel" aria-labelledby="hana-tab">
         <div class="row mt-4">
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Input Biller MyHana Data</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Input Bifast MyHana Data</h6>
               </div>
               <div class="card-body">
                 <form @submit.prevent="submitHanaForm">
@@ -125,16 +125,16 @@
                     <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="billerMyhanaTrxFreq">Biller MyHana Transaction Frequency</label>
-                    <input type="number" class="form-control" id="billerMyhanaTrxFreq" v-model.number="hanaForm.billerMyhanaTrxFreq" :disabled="isSubmitting">
+                    <label for="bifastMyhanaTrxFreq">Bifast MyHana Transaction Frequency</label>
+                    <input type="number" class="form-control" id="bifastMyhanaTrxFreq" v-model.number="hanaForm.bifastMyhanaTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="billerMyhanaTrxAmt">Biller MyHana Transaction Amount</label>
-                    <input type="number" class="form-control" id="billerMyhanaTrxAmt" v-model.number="hanaForm.billerMyhanaTrxAmt" :disabled="isSubmitting">
+                    <label for="bifastMyhanaTrxAmt">Bifast MyHana Transaction Amount</label>
+                    <input type="number" class="form-control" id="bifastMyhanaTrxAmt" v-model.number="hanaForm.bifastMyhanaTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="billerMyhanaUniqueCifQty">Biller MyHana Unique CIF Quantity</label>
-                    <input type="number" class="form-control" id="billerMyhanaUniqueCifQty" v-model.number="hanaForm.billerMyhanaUniqueCifQty" :disabled="isSubmitting">
+                    <label for="bifastMyhanaUniqueCifQty">Bifast MyHana Unique CIF Quantity</label>
+                    <input type="number" class="form-control" id="bifastMyhanaUniqueCifQty" v-model.number="hanaForm.bifastMyhanaUniqueCifQty" :disabled="isSubmitting">
                   </div>
                   <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit MyHana Data</button>
                 </form>
@@ -144,7 +144,7 @@
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Biller MyHana Data</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Bifast MyHana Data</h6>
                 <button class="btn btn-success btn-sm" @click="exportHanaData">Export CSV</button>
               </div>
               <div class="card-body">
@@ -172,17 +172,17 @@
 <script>
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import { VueGoodTable } from 'vue-good-table-next';
-import BillerLineDataTable from '@/components/table/BillerLineDataTable.vue';
+import BifastLineDataTable from '@/components/table/BifastLineDataTable.vue';
 import axios from 'axios';
 import { handleError } from '@/utils/notify';
 import { useToast } from "vue-toastification";
 import Papa from 'papaparse';
 
 export default {
-  name: 'BillerDataForm',
+  name: 'BifastDataForm',
   components: {
     VueGoodTable,
-    BillerLineDataTable,
+    BifastLineDataTable,
   },
   data() {
     return {
@@ -190,27 +190,27 @@ export default {
       toast: useToast(),
       lineForm: {
         startDt: new Date().toISOString().slice(0, 7),
-        billerTrxFreq: 0,
-        billerTrxAmt: 0,
-        billerUniqueCifQty: 0,
+        bifastTrxFreq: 0,
+        bifastTrxAmt: 0,
+        bifastUniqueCifQty: 0,
       },
       hanaForm: {
         startDt: new Date().toISOString().slice(0, 7),
-        billerMyhanaTrxFreq: 0,
-        billerMyhanaTrxAmt: 0,
-        billerMyhanaUniqueCifQty: 0,
+        bifastMyhanaTrxFreq: 0,
+        bifastMyhanaTrxAmt: 0,
+        bifastMyhanaUniqueCifQty: 0,
       },
       csvFile: null,
       csvData: [],
       csvHeaders: [],
       expectedCsvHeaders: [
         'START_DT (DD/MM/YYYY)',
-        'BILL_TRX_FREQ',
-        'BILL_TRX_AMT',
-        'BILL_UNIQUE_CIF_QTY',
-        'BILL_MYHANA_TRX_FREQ',
-        'BILL_MYHANA_TRX_AMT',
-        'BILL_MYHANA_UNIQUE_CIF_QTY',
+        'BIFAST_TRX_FREQ',
+        'BIFAST_TRX_AMT',
+        'BIFAST_UNIQUE_CIF_QTY',
+        'BIFAST_MYHANA_TRX_FREQ',
+        'BIFAST_MYHANA_TRX_AMT',
+        'BIFAST_MYHANA_UNIQUE_CIF_QTY',
       ],
       isDragging: false,
       hanaData: [],
@@ -234,19 +234,19 @@ export default {
         },
         {
           label: 'Transaction Frequency',
-          field: 'billerMyhanaTrxFreq',
+          field: 'bifastMyhanaTrxFreq',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Transaction Amount',
-          field: 'billerMyhanaTrxAmt',
+          field: 'bifastMyhanaTrxAmt',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Unique CIF Quantity',
-          field: 'billerMyhanaUniqueCifQty',
+          field: 'bifastMyhanaUniqueCifQty',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
@@ -272,7 +272,7 @@ export default {
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.setAttribute('download', 'biller-template.csv');
+      link.setAttribute('download', 'bifast-template.csv');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -281,7 +281,7 @@ export default {
       this.hanaIsLoading = true;
       try {
         const { page, per_page, start_dt, sort } = this.hanaServerParams;
-        let url = `/biller/biller-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}`;
+        let url = `/bifast/bifast-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}`;
         if (sort.length > 0 && sort[0].field) {
           url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
         }
@@ -317,8 +317,8 @@ export default {
           ...this.lineForm,
           startDt: `${this.lineForm.startDt}-01`
         };
-        const response = await axios.post('biller/store-biller-line-data', submissionData);
-        this.$refs.billerLineDataTable.fetchLineData();
+        const response = await axios.post('bifast/store-bifast-line-data', submissionData);
+        this.$refs.bifastLineDataTable.fetchLineData();
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
@@ -327,7 +327,7 @@ export default {
       }
     },
     fetchLineData() {
-      this.$refs.billerLineDataTable.fetchLineData();
+      this.$refs.bifastLineDataTable.fetchLineData();
     },
     async submitHanaForm() {
       this.isSubmitting = true;
@@ -336,7 +336,7 @@ export default {
           ...this.hanaForm,
           startDt: `${this.hanaForm.startDt}-01`
         };
-        const response = await axios.post('biller/store-biller-hana-data', submissionData);
+        const response = await axios.post('bifast/store-bifast-hana-data', submissionData);
         this.fetchHanaData();
         this.toast.success(response.data.message);
       } catch (error) {
@@ -414,7 +414,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('/biller/upload', { data: this.csvData });
+        const response = await axios.post('/bifast/upload', { data: this.csvData });
         this.fetchLineData();
         this.fetchHanaData();
         this.clearCsvFile();
@@ -425,12 +425,12 @@ export default {
     },
     async exportHanaData() {
       try {
-        const response = await axios.get('/biller/biller-hana-data?per_page=-1');
+        const response = await axios.get('/bifast/bifast-hana-data?per_page=-1');
         const csv = Papa.unparse(response.data.data);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'biller-hana-data.csv');
+        link.setAttribute('download', 'bifast-hana-data.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

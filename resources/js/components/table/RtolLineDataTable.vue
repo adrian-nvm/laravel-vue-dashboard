@@ -2,7 +2,7 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <div class="d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Biller Line Data</h6>
+        <h6 class="m-0 font-weight-bold text-primary">RTOL Out - Line Data</h6>
         <button class="btn btn-success btn-sm" @click="exportLineData">Export CSV</button>
       </div>
       <form @submit.prevent="applyLineFilters" class="form-inline mt-3">
@@ -44,7 +44,7 @@ import { useToast } from "vue-toastification";
 import Papa from 'papaparse';
 
 export default {
-  name: 'BillerLineDataTable',
+  name: 'RtolLineDataTable',
   components: {
     VueGoodTable,
     LoadingIndicator,
@@ -77,19 +77,19 @@ export default {
         },
         {
           label: 'Transaction Frequency',
-          field: 'billerTrxFreq',
+          field: 'rtolTrxFreq',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Transaction Amount',
-          field: 'billerTrxAmt',
+          field: 'rtolTrxAmt',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Unique CIF Quantity',
-          field: 'billerUniqueCifQty',
+          field: 'rtolUniqueCifQty',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
@@ -119,7 +119,7 @@ export default {
       this.lineIsLoading = true;
       try {
         const { page, per_page, start_dt, sort, start_month, end_month } = this.lineServerParams;
-        let url = `/biller/biller-line-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
+        let url = `/rtol/rtol-line-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
         if (sort.length > 0 && sort[0].field) {
           url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
         }
@@ -150,12 +150,12 @@ export default {
     },
     async exportLineData() {
       try {
-        const response = await axios.get('/biller/biller-line-data?per_page=-1');
+        const response = await axios.get('/rtol/rtol-line-data?per_page=-1');
         const csv = Papa.unparse(response.data.data);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'biller-line-data.csv');
+        link.setAttribute('download', 'rtol-line-data.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

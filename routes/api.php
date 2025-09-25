@@ -10,6 +10,10 @@ use App\Http\Controllers\Chart\ChartSlideshowController;
 use App\Http\Controllers\Chart\QrisChartController;
 use App\Http\Controllers\Chart\BillerChartController;
 use App\Http\Controllers\Chart\DebitChartController;
+use App\Http\Controllers\Form\BifastDataController;
+use App\Http\Controllers\Chart\BifastChartController;
+use App\Http\Controllers\Form\RtolDataController;
+use App\Http\Controllers\Chart\RtolChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,34 +35,57 @@ Route::get('email/verify/{id}', [Api\VerifyController::class, 'verify'])->name('
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('user', [Api\AuthController::class, 'user']);
-    Route::post('qris/line-data', [QrisDataController::class, 'storeLineData']);
-    Route::post('qris/hana-data', [QrisDataController::class, 'storeHanaData']);
+    // QRIS Data Routes
+    Route::post('qris/store-qris-line-data', [QrisDataController::class, 'storeLineData']);
+    Route::post('qris/store-qris-hana-data', [QrisDataController::class, 'storeHanaData']);
+    Route::get('qris/qris-line-data', [QrisDataController::class, 'getQrisLineData']);
+    Route::get('qris/qris-hana-data', [QrisDataController::class, 'getQrisHanaData']);
+    Route::post('qris/upload', [QrisDataController::class, 'upload']);
+
+    // Biller Data Routes
+    Route::post('biller/store-biller-line-data', [BillerDataController::class, 'storeLineData']);
+    Route::post('biller/store-biller-hana-data', [BillerDataController::class, 'storeHanaData']);
+    Route::get('biller/biller-line-data', [BillerDataController::class, 'getBillerLineData']);
+    Route::get('biller/biller-hana-data', [BillerDataController::class, 'getBillerHanaData']);
+    Route::post('biller/upload', [BillerDataController::class, 'upload']);
+
+    // Debit Data Routes
+    Route::post('debit/store-debit-line-data', [DebitDataController::class, 'storeLineData']);
+    Route::post('debit/store-debit-hana-data', [DebitDataController::class, 'storeHanaData']);
+    Route::get('debit/debit-line-data', [DebitDataController::class, 'getDebitLineData']);
+    Route::get('debit/debit-hana-data', [DebitDataController::class, 'getDebitHanaData']);
+    Route::post('debit/upload', [DebitDataController::class, 'upload']);
+
+    // Bifast Data Routes
+    Route::post('bifast/store-bifast-line-data', [BifastDataController::class, 'storeLineData']);
+    Route::post('bifast/store-bifast-hana-data', [BifastDataController::class, 'storeHanaData']);
+    Route::get('bifast/bifast-line-data', [BifastDataController::class, 'getBifastLineData']);
+    Route::get('bifast/bifast-hana-data', [BifastDataController::class, 'getBifastHanaData']);
+    Route::post('bifast/upload', [BifastDataController::class, 'upload']);
+
+    // RTOL Data Routes
+    Route::post('rtol/store-rtol-line-data', [RtolDataController::class, 'storeLineData']);
+    Route::post('rtol/store-rtol-hana-data', [RtolDataController::class, 'storeHanaData']);
+    Route::get('rtol/rtol-line-data', [RtolDataController::class, 'getRtolLineData']);
+    Route::get('rtol/rtol-hana-data', [RtolDataController::class, 'getRtolHanaData']);
+    Route::post('rtol/upload', [RtolDataController::class, 'upload']);
+
+    // Combined Chart Route
+    Route::post('combined-chart', [App\Http\Controllers\Chart\CombinedChartController::class, 'fetchData']);
+
+    // Chart Slideshow Route
+    Route::get('charts/slideshow', [ChartSlideshowController::class, 'getChartData']);
+
+    // Chart Data Routes
+    Route::get('chart/qris-line', [QrisChartController::class, 'showLineChart']);
+    Route::get('chart/qris-hana', [QrisChartController::class, 'showHanaChart']);
+    Route::get('chart/biller-line', [BillerChartController::class, 'showLineChart']);
+    Route::get('chart/biller-hana', [BillerChartController::class, 'showHanaChart']);
+    Route::get('chart/debit-line', [DebitChartController::class, 'showLineChart']);
+    Route::get('chart/debit-hana', [DebitChartController::class, 'showHanaChart']);
+    Route::get('chart/bifast-line', [BifastChartController::class, 'showLineChart']);
+    Route::get('chart/bifast-hana', [BifastChartController::class, 'showHanaChart']);
+    Route::get('chart/rtol-line', [RtolChartController::class, 'showLineChart']);
+    Route::get('chart/rtol-hana', [RtolChartController::class, 'showHanaChart']);
+
 });
-
-Route::get('qris/line-data', [QrisDataController::class, 'getQrisLineData'])->middleware('auth:api');
-Route::get('qris/hana-data', [QrisDataController::class, 'getQrisHanaData'])->middleware('auth:api');
-Route::post('qris/upload', [QrisDataController::class, 'upload'])->middleware('auth:api');
-
-// Biller Data Routes
-Route::get('biller/line-data', [BillerDataController::class, 'getBillerLineData'])->middleware('auth:api');
-Route::get('biller/hana-data', [BillerDataController::class, 'getBillerHanaData'])->middleware('auth:api');
-Route::post('biller/upload', [BillerDataController::class, 'upload'])->middleware('auth:api');
-
-// Debit Data Routes
-Route::get('debit/line-data', [DebitDataController::class, 'getDebitLineData'])->middleware('auth:api');
-Route::get('debit/hana-data', [DebitDataController::class, 'getDebitHanaData'])->middleware('auth:api');
-Route::post('debit/upload', [DebitDataController::class, 'upload'])->middleware('auth:api');
-
-// Chart Slideshow Route
-Route::get('charts/slideshow', [ChartSlideshowController::class, 'getChartData'])->middleware('auth:api');
-
-// Combined Chart Route
-Route::post('combined-chart', [App\Http\Controllers\Chart\CombinedChartController::class, 'fetchData'])->middleware('auth:api');
-
-// Chart Data Routes
-Route::get('chart/qris-line', [QrisChartController::class, 'showLineChart'])->middleware('auth:api');
-Route::get('chart/qris-hana', [QrisChartController::class, 'showHanaChart'])->middleware('auth:api');
-Route::get('chart/biller-line', [BillerChartController::class, 'showLineChart'])->middleware('auth:api');
-Route::get('chart/biller-hana', [BillerChartController::class, 'showHanaChart'])->middleware('auth:api');
-Route::get('chart/debit-line', [DebitChartController::class, 'showLineChart'])->middleware('auth:api');
-Route::get('chart/debit-hana', [DebitChartController::class, 'showHanaChart'])->middleware('auth:api');

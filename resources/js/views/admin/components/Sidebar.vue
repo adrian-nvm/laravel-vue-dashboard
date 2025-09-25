@@ -188,6 +188,8 @@
             <router-link class="collapse-item" to="/admin/reports/qris-data">QRIS Data</router-link>
             <router-link class="collapse-item" to="/admin/reports/biller-data">Biller Data</router-link>
             <router-link class="collapse-item" to="/admin/reports/debit-data">Debit Data</router-link>
+            <router-link class="collapse-item" to="/admin/reports/bifast-data">BI-Fast Data</router-link>
+            <router-link class="collapse-item" to="/admin/reports/rtol-data">RTOL Data</router-link>
           </div>
         </div>
       </li>
@@ -222,6 +224,8 @@
             <router-link class="collapse-item" to="/admin/qris-data-form">QRIS Data Form</router-link>
             <router-link class="collapse-item" to="/admin/biller-data-form">Biller Data Form</router-link>
             <router-link class="collapse-item" to="/admin/debit-data-form">Debit Data Form</router-link>
+            <router-link class="collapse-item" to="/admin/bifast-data-form">BI-Fast Data Form</router-link>
+            <router-link class="collapse-item" to="/admin/rtol-data-form">RTOL-Out Data Form</router-link>
           </div>
         </div>
       </li>

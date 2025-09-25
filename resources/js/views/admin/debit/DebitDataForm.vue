@@ -281,7 +281,7 @@ export default {
       this.hanaIsLoading = true;
       try {
         const { page, per_page, start_dt, sort } = this.hanaServerParams;
-        let url = `/debit/hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}`;
+        let url = `/debit/debit-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}`;
         if (sort.length > 0 && sort[0].field) {
           url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
         }
@@ -317,7 +317,7 @@ export default {
           ...this.lineForm,
           startDt: `${this.lineForm.startDt}-01`
         };
-        const response = await axios.post('debit/line-data', submissionData);
+        const response = await axios.post('debit/store-debit-line-data', submissionData);
         this.$refs.debitLineDataTable.fetchLineData();
         this.toast.success(response.data.message);
       } catch (error) {
@@ -336,7 +336,7 @@ export default {
           ...this.hanaForm,
           startDt: `${this.hanaForm.startDt}-01`
         };
-        const response = await axios.post('debit/hana-data', submissionData);
+        const response = await axios.post('debit/store-debit-hana-data', submissionData);
         this.fetchHanaData();
         this.toast.success(response.data.message);
       } catch (error) {
@@ -425,7 +425,7 @@ export default {
     },
     async exportHanaData() {
       try {
-        const response = await axios.get('/debit/hana-data?per_page=-1');
+        const response = await axios.get('/debit/debit-hana-data?per_page=-1');
         const csv = Papa.unparse(response.data.data);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');

@@ -17,22 +17,30 @@ class ChartSlideshowController extends Controller
         $qrisChartController = new QrisChartController();
         $billerChartController = new BillerChartController();
         $debitChartController = new DebitChartController();
+        $bifastChartController = new BifastChartController();
+        $rtolChartController = new RtolChartController();
 
         // Call the getChartData method for each controller
         $qrisResponse = $qrisChartController->getChartData($request);
         $billerResponse = $billerChartController->getChartData($request);
         $debitResponse = $debitChartController->getChartData($request);
+        $bifastResponse = $bifastChartController->getChartData($request);
+        $rtolResponse = $rtolChartController->getChartData($request);
 
         // Get the data from the responses
         $qrisChartData = $qrisResponse->getData(true);
         $billerChartData = $billerResponse->getData(true);
         $debitChartData = $debitResponse->getData(true);
+        $bifastChartData = $bifastResponse->getData(true);
+        $rtolChartData = $rtolResponse->getData(true);
 
         // Combine all chart data into a single array
         $combinedChartData = [
             'qris' => $qrisChartData,
             'biller' => $billerChartData,
             'debit' => $debitChartData,
+            'bifast' => $bifastChartData,
+            'rtol' => $rtolChartData,
         ];
 
         Log::info('SlideShow Chart Data:', $combinedChartData);

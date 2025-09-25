@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Biller Data Report</h1>
+    <h1 class="h3 mb-4 text-gray-800">Bifast Data Report</h1>
 
     <div class="row">
       <div class="col-lg-6">
-        <BillerLineDataTable />
+        <BifastLineDataTable />
       </div>
       <div class="col-lg-6">
-        <!-- Biller MyHana Datatable -->
+        <!-- Bifast MyHana Datatable -->
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             <div class="d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Biller MyHana Data</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Bifast MyHana Data</h6>
               <button class="btn btn-success btn-sm" @click="exportHanaData">Export CSV</button>
             </div>
             <form @submit.prevent="applyHanaFilters" class="form-inline mt-3">
@@ -50,17 +50,17 @@
 <script>
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import { VueGoodTable } from 'vue-good-table-next';
-import BillerLineDataTable from '@/components/table/BillerLineDataTable.vue';
+import BifastLineDataTable from '@/components/table/BifastLineDataTable.vue';
 import axios from 'axios';
 import { handleError } from '@/utils/notify';
 import { useToast } from "vue-toastification";
 import Papa from 'papaparse';
 
 export default {
-  name: 'BillerDataReport',
+  name: 'BifastDataReport',
   components: {
     VueGoodTable,
-    BillerLineDataTable,
+    BifastLineDataTable,
   },
   data() {
     return {
@@ -90,19 +90,19 @@ export default {
         },
         {
           label: 'Transaction Frequency',
-          field: 'billerMyhanaTrxFreq',
+          field: 'bifastMyhanaTrxFreq',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Transaction Amount',
-          field: 'billerMyhanaTrxAmt',
+          field: 'bifastMyhanaTrxAmt',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Unique CIF Quantity',
-          field: 'billerMyhanaUniqueCifQty',
+          field: 'bifastMyhanaUniqueCifQty',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
@@ -132,7 +132,7 @@ export default {
       this.hanaIsLoading = true;
       try {
         const { page, per_page, start_dt, sort, start_month, end_month } = this.hanaServerParams;
-        let url = `/biller/biller-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
+        let url = `/bifast/bifast-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
         if (sort.length > 0 && sort[0].field) {
           url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
         }
@@ -163,12 +163,12 @@ export default {
     },
     async exportHanaData() {
       try {
-        const response = await axios.get('/biller/biller-hana-data?per_page=-1');
+        const response = await axios.get('/bifast/bifast-hana-data?per_page=-1');
         const csv = Papa.unparse(response.data.data);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'biller-hana-data.csv');
+        link.setAttribute('download', 'bifast-hana-data.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

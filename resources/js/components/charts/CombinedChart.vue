@@ -2,15 +2,9 @@
   <div>
     <div class="row mb-3">
       <div class="col-md-3">
-        <select class="form-control" v-model="selectedBank" @change="clearSelectedCharts" :disabled="isLoading">
-          <option value="LineBank">LineBank</option>
-          <option value="HanaBank">HanaBank</option>
-        </select>
-      </div>
-      <div class="col-md-3">
         <multiselect
           v-model="selectedCharts"
-          :options="filteredChartOptions"
+          :options="chartOptions"
           :multiple="true"
           group-values="options"
           group-label="group"
@@ -49,6 +43,7 @@
 import Chart from 'chart.js/auto';
 import trendline from 'chartjs-plugin-trendline';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import 'chartjs-adapter-date-fns';
 import Multiselect from 'vue-multiselect';
 import axios from 'axios';
 import LoadingIndicator from '../LoadingIndicator.vue';
@@ -65,7 +60,6 @@ export default {
       selectedCharts: [],
       startMonth: '',
       endMonth: '',
-      selectedBank: 'LineBank',
       chartOptions: [
         {
           group: '----- LineBank - Volume -----',
@@ -73,6 +67,8 @@ export default {
             'Qris_LineBank_Volume',
             'Debit_LineBank_Volume',
             'Biller_LineBank_Volume',
+            'Bifast_LineBank_Volume',
+            'Rtol_LineBank_Volume',
           ]
         },
         {
@@ -81,6 +77,8 @@ export default {
             'Qris_LineBank_Frequency',
             'Debit_LineBank_Frequency',
             'Biller_LineBank_Frequency',
+            'Bifast_LineBank_Frequency',
+            'Rtol_LineBank_Frequency',
           ]
         },
         {
@@ -89,6 +87,8 @@ export default {
             'Qris_HanaBank_Volume',
             'Debit_HanaBank_Volume',
             'Biller_HanaBank_Volume',
+            'Bifast_HanaBank_Volume',
+            'Rtol_HanaBank_Volume',
           ]
         },
         {
@@ -97,6 +97,8 @@ export default {
             'Qris_HanaBank_Frequency',
             'Debit_HanaBank_Frequency',
             'Biller_HanaBank_Frequency',
+            'Bifast_HanaBank_Frequency',
+            'Rtol_HanaBank_Frequency',
           ]
         }
       ],
@@ -106,20 +108,11 @@ export default {
       },
     };
   },
-  computed: {
-    filteredChartOptions() {
-      return this.chartOptions.filter(option => option.group.includes(this.selectedBank));
-    },
-  },
   mounted() {
     Chart.register(trendline, ChartDataLabels);
     this.createChart();
   },
   methods: {
-    clearSelectedCharts() {
-      this.selectedCharts = [];
-      this.updateChart();
-    },
     createChart() {
       if (this.chart) {
         this.chart.destroy();
@@ -135,22 +128,34 @@ export default {
           plugins: {
             datalabels: {
               formatter: (value) => {
-                if (!value) return '';
-                if (value >= 1000000000) {
-                  return (value / 1000000000).toFixed(1) + 'B';
+                const yValue = value.y;
+                if (yValue === null || yValue === undefined) return '';
+                if (yValue >= 1000000000) {
+                  return (yValue / 1000000000).toFixed(1) + 'B';
                 }
-              },
-              ticks: {
-                callback: function(value) {
-                  if (value >= 1000) {
-                    return value / 1000 + 'K';
-                  }
-                  return value;
+                if (yValue >= 1000000) {
+                  return (yValue / 1000000).toFixed(1) + 'M';
                 }
+                if (yValue >= 1000) {
+                  return (yValue / 1000).toFixed(1) + 'K';
+                }
+                return yValue;
               }
             },
           },
           scales: {
+            x: {
+              type: 'time',
+              time: {
+                unit: 'month',
+                displayFormats: {
+                  month: 'MMM yyyy'
+                }
+              },
+              ticks: {
+                source: 'data'
+              }
+            },
             y: {
               type: 'linear',
               display: hasFrequency,
@@ -226,11 +231,20 @@ export default {
         });
         const data = response.data;
 
-        this.chartData.labels = data.labels.map(label => {
-          const date = new Date(label);
-          return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        const datasets = data.datasets.map(dataset => {
+          return {
+            ...dataset,
+            data: data.labels.map((label, index) => {
+              return {
+                x: new Date(label),
+                y: dataset.data[index]
+              };
+            })
+          };
         });
-        this.chartData.datasets = data.datasets;
+
+        this.chartData.labels = data.labels.map(label => new Date(label));
+        this.chartData.datasets = datasets;
         this.createChart();
       } catch (error) {
         console.error('Error fetching combined chart data:', error);

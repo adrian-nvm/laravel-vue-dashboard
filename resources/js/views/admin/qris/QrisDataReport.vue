@@ -132,7 +132,7 @@ export default {
       this.hanaIsLoading = true;
       try {
         const { page, per_page, start_dt, sort, start_month, end_month } = this.hanaServerParams;
-        let url = `/qris/hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
+        let url = `/qris/qris-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
         if (sort.length > 0 && sort[0].field) {
           url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
         }
@@ -163,7 +163,7 @@ export default {
     },
     async exportHanaData() {
       try {
-        const response = await axios.get('/qris/hana-data?per_page=-1');
+        const response = await axios.get('/qris/qris-hana-data?per_page=-1');
         const csv = Papa.unparse(response.data.data);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');

@@ -192,6 +192,42 @@ const router = createRouter({
             }
         },
         {
+            path: "/admin/bifast-data-form",
+            name: "admin.bifast-data-form",
+            component: () => import("./views/admin/bifast/BifastDataForm.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/reports/bifast-data",
+            name: "admin.reports.bifast-data",
+            component: () => import("./views/admin/bifast/BifastDataReport.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/rtol-data-form",
+            name: "admin.rtol-data-form",
+            component: () => import("./views/admin/rtol/RtolDataForm.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
+            path: "/admin/reports/rtol-data",
+            name: "admin.reports.rtol-data",
+            component: () => import("./views/admin/rtol/RtolDataReport.vue"),
+            meta: {
+                requiresAuth: true,
+                layout: AdminLayout
+            }
+        },
+        {
             path: "/admin/combined-chart",
             name: "admin.combined-chart",
             component: () => import("./views/admin/CombinedChartPage.vue"),

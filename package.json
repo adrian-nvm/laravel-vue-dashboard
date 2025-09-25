@@ -21,9 +21,11 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
         "chart.js": "^4.4.0",
+        "chartjs-adapter-date-fns": "^3.0.0",
         "chartjs-plugin-datalabels": "^2.2.0",
         "chartjs-plugin-trendline": "^3.1.1",
         "datatables.net-dt": "^1.1.0",
+        "date-fns": "^4.1.0",
         "papaparse": "^5.5.3",
         "startbootstrap-sb-admin-2": "^4.1.4",
         "vue-chartjs": "^5.2.0",

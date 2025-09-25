@@ -33,24 +33,24 @@ import "vue-toastification/dist/index.css";
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import QrisLineChart from './components/charts/QrisLineChart.vue';
-import QrisHanaChart from './components/charts/QrisHanaChart.vue';
-import BillerLineChart from './components/charts/BillerLineChart.vue';
-import BillerHanaChart from './components/charts/BillerHanaChart.vue';
-import DebitLineChart from './components/charts/DebitLineChart.vue';
-import DebitHanaChart from './components/charts/DebitHanaChart.vue';
+// import QrisLineChart from './components/charts/QrisLineChart.vue';
+// import QrisHanaChart from './components/charts/QrisHanaChart.vue';
+// import BillerLineChart from './components/charts/BillerLineChart.vue';
+// import BillerHanaChart from './components/charts/BillerHanaChart.vue';
+// import DebitLineChart from './components/charts/DebitLineChart.vue';
+// import DebitHanaChart from './components/charts/DebitHanaChart.vue';
 import ChartSlideshow from './components/charts/ChartSlideshow.vue';
 import CombinedChart from './components/charts/CombinedChart.vue';
 import App from "./App.vue";
 
 const app = createApp(App); // Create Vue 3 app instance
 
-app.component('qris-line-chart', QrisLineChart);
-app.component('qris-hana-chart', QrisHanaChart);
-app.component('biller-line-chart', BillerLineChart);
-app.component('biller-hana-chart', BillerHanaChart);
-app.component('debit-line-chart', DebitLineChart);
-app.component('debit-hana-chart', DebitHanaChart);
+// app.component('qris-line-chart', QrisLineChart);
+// app.component('qris-hana-chart', QrisHanaChart);
+// app.component('biller-line-chart', BillerLineChart);
+// app.component('biller-hana-chart', BillerHanaChart);
+// app.component('debit-line-chart', DebitLineChart);
+// app.component('debit-hana-chart', DebitHanaChart);
 app.component('chart-slideshow', ChartSlideshow);
 app.component('combined-chart', CombinedChart);
 
