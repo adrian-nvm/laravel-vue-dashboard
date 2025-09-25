@@ -19,6 +19,9 @@ export default defineConfig(({ mode }) => {
                     includeAbsolute: false,
                 },
             },
+            script: {
+                babelParserPlugins: ['decorators'],
+            },
         }),
     ],
     resolve: {

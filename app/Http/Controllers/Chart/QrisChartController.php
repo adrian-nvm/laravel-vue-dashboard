@@ -29,15 +29,20 @@ class QrisChartController extends Controller
                 'QRIS_MYHANA_UNIQUE_CIF_QTY as qrisMyhanaUniqueCifQty'
             ]);
 
-        if ($startDate && $endDate) {
-            $query->whereBetween('START_DT', [$startDate, $endDate])->orderBy('START_DT', 'asc');
-        } elseif ($startDate) {
-            $query->where('START_DT', '>=', $startDate)->orderBy('START_DT', 'asc');
+        if ($startDate || $endDate) {
+            if ($startDate) {
+                $query->where('START_DT', '>=', $startDate);
+            }
+            if ($endDate) {
+                $query->where('START_DT', '<=', $endDate);
+            }
         } else {
             // Get last 12 months if no date filter
-            $subQuery = DB::table('monthly_qris_trx')->orderBy('START_DT', 'desc')->limit(12);
-            $query->fromSub($subQuery, 'monthly_qris_trx')->orderBy('START_DT', 'asc');
+            $twelveMonthsAgo = Carbon::now()->subMonths(12)->startOfMonth()->toDateString();
+            $query->where('START_DT', '>=', $twelveMonthsAgo);
         }
+
+        $query->orderBy('START_DT', 'asc');
 
         $data = $query->get();
 

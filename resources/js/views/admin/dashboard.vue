@@ -454,14 +454,14 @@
 </template>
 
 <script>
-import chartAreaDemo from "../../chart/demo/chart-area-demo";
-import chartPieDemo from "../../chart/demo/chart-pie-demo";
+// import chartAreaDemo from "../../chart/demo/chart-area-demo";
+// import chartPieDemo from "../../chart/demo/chart-pie-demo";
 
 export default {
   name: "Dashboard",
   mounted() {
-    chartAreaDemo();
-    chartPieDemo();
+    // chartAreaDemo();
+    // chartPieDemo();
   },
 };
 </script>

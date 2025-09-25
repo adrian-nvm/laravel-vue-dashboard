@@ -211,41 +211,41 @@ const router = createRouter({
             component: () => import("./components/charts/ChartSlideshow.vue"),
             props: true
         },
-        {
-            path: "/chart/qris-line",
-            name: "qris-line-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
-        {
-            path: "/chart/qris-line",
-            name: "qris-line-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
-        {
-            path: "/chart/qris-hana",
-            name: "qris-hana-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
-        {
-            path: "/chart/biller-line",
-            name: "biller-line-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
-        {
-            path: "/chart/biller-hana",
-            name: "biller-hana-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
-        {
-            path: "/chart/debit-line",
-            name: "debit-line-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
-        {
-            path: "/chart/debit-hana",
-            name: "debit-hana-chart",
-            component: () => import("./views/admin/charts.vue")
-        },
+        // {
+        //     path: "/chart/qris-line",
+        //     name: "qris-line-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
+        // {
+        //     path: "/chart/qris-line",
+        //     name: "qris-line-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
+        // {
+        //     path: "/chart/qris-hana",
+        //     name: "qris-hana-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
+        // {
+        //     path: "/chart/biller-line",
+        //     name: "biller-line-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
+        // {
+        //     path: "/chart/biller-hana",
+        //     name: "biller-hana-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
+        // {
+        //     path: "/chart/debit-line",
+        //     name: "debit-line-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
+        // {
+        //     path: "/chart/debit-hana",
+        //     name: "debit-hana-chart",
+        //     component: () => import("./views/admin/charts.vue")
+        // },
         {
             path: "/:pathMatch(.*)*",
             name: "not-found",

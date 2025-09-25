@@ -85,21 +85,21 @@
                 <form @submit.prevent="submitLineForm">
                   <div class="form-group">
                     <label for="lineStartDt">Start Date</label>
-                    <input type="month" class="form-control" id="lineStartDt" v-model="lineForm.startDt">
+                    <input type="month" class="form-control" id="lineStartDt" v-model="lineForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="billerTrxFreq">Biller Transaction Frequency</label>
-                    <input type="number" class="form-control" id="billerTrxFreq" v-model.number="lineForm.billerTrxFreq">
+                    <input type="number" class="form-control" id="billerTrxFreq" v-model.number="lineForm.billerTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="billerTrxAmt">Biller Transaction Amount</label>
-                    <input type="number" class="form-control" id="billerTrxAmt" v-model.number="lineForm.billerTrxAmt">
+                    <input type="number" class="form-control" id="billerTrxAmt" v-model.number="lineForm.billerTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="billerUniqueCifQty">Biller Unique CIF Quantity</label>
-                    <input type="number" class="form-control" id="billerUniqueCifQty" v-model.number="lineForm.billerUniqueCifQty">
+                    <input type="number" class="form-control" id="billerUniqueCifQty" v-model.number="lineForm.billerUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit Line Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Data</button>
                 </form>
               </div>
             </div>
@@ -122,21 +122,21 @@
                 <form @submit.prevent="submitHanaForm">
                   <div class="form-group">
                     <label for="hanaStartDt">Start Date</label>
-                    <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt">
+                    <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="billerMyhanaTrxFreq">Biller MyHana Transaction Frequency</label>
-                    <input type="number" class="form-control" id="billerMyhanaTrxFreq" v-model.number="hanaForm.billerMyhanaTrxFreq">
+                    <input type="number" class="form-control" id="billerMyhanaTrxFreq" v-model.number="hanaForm.billerMyhanaTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="billerMyhanaTrxAmt">Biller MyHana Transaction Amount</label>
-                    <input type="number" class="form-control" id="billerMyhanaTrxAmt" v-model.number="hanaForm.billerMyhanaTrxAmt">
+                    <input type="number" class="form-control" id="billerMyhanaTrxAmt" v-model.number="hanaForm.billerMyhanaTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="billerMyhanaUniqueCifQty">Biller MyHana Unique CIF Quantity</label>
-                    <input type="number" class="form-control" id="billerMyhanaUniqueCifQty" v-model.number="hanaForm.billerMyhanaUniqueCifQty">
+                    <input type="number" class="form-control" id="billerMyhanaUniqueCifQty" v-model.number="hanaForm.billerMyhanaUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit MyHana Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit MyHana Data</button>
                 </form>
               </div>
             </div>
@@ -186,6 +186,7 @@ export default {
   },
   data() {
     return {
+      isSubmitting: false,
       toast: useToast(),
       lineForm: {
         startDt: new Date().toISOString().slice(0, 7),
@@ -310,6 +311,7 @@ export default {
       this.fetchHanaData();
     },
     async submitLineForm() {
+      this.isSubmitting = true;
       try {
         const submissionData = {
           ...this.lineForm,
@@ -320,12 +322,15 @@ export default {
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
+      } finally {
+        this.isSubmitting = false;
       }
     },
     fetchLineData() {
       this.$refs.billerLineDataTable.fetchLineData();
     },
     async submitHanaForm() {
+      this.isSubmitting = true;
       try {
         const submissionData = {
           ...this.hanaForm,
@@ -336,6 +341,8 @@ export default {
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
+      } finally {
+        this.isSubmitting = false;
       }
     },
     triggerFileInput() {

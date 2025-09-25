@@ -85,21 +85,21 @@
                 <form @submit.prevent="submitLineForm">
                   <div class="form-group">
                     <label for="lineStartDt">Start Date</label>
-                    <input type="month" class="form-control" id="lineStartDt" v-model="lineForm.startDt">
+                    <input type="month" class="form-control" id="lineStartDt" v-model="lineForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="qrisTrxFreq">QRIS Transaction Frequency</label>
-                    <input type="number" class="form-control" id="qrisTrxFreq" v-model.number="lineForm.qrisTrxFreq">
+                    <input type="number" class="form-control" id="qrisTrxFreq" v-model.number="lineForm.qrisTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="qrisTrxAmt">QRIS Transaction Amount</label>
-                    <input type="number" class="form-control" id="qrisTrxAmt" v-model.number="lineForm.qrisTrxAmt">
+                    <input type="number" class="form-control" id="qrisTrxAmt" v-model.number="lineForm.qrisTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="qrisUniqueCifQty">QRIS Unique CIF Quantity</label>
-                    <input type="number" class="form-control" id="qrisUniqueCifQty" v-model.number="lineForm.qrisUniqueCifQty">
+                    <input type="number" class="form-control" id="qrisUniqueCifQty" v-model.number="lineForm.qrisUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit Line Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Data</button>
                 </form>
               </div>
             </div>
@@ -122,21 +122,21 @@
                 <form @submit.prevent="submitHanaForm">
                   <div class="form-group">
                     <label for="hanaStartDt">Start Date</label>
-                    <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt">
+                    <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="qrisMyhanaTrxFreq">QRIS MyHana Transaction Frequency</label>
-                    <input type="number" class="form-control" id="qrisMyhanaTrxFreq" v-model.number="hanaForm.qrisMyhanaTrxFreq">
+                    <input type="number" class="form-control" id="qrisMyhanaTrxFreq" v-model.number="hanaForm.qrisMyhanaTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="qrisMyhanaTrxAmt">QRIS MyHana Transaction Amount</label>
-                    <input type="number" class="form-control" id="qrisMyhanaTrxAmt" v-model.number="hanaForm.qrisMyhanaTrxAmt">
+                    <input type="number" class="form-control" id="qrisMyhanaTrxAmt" v-model.number="hanaForm.qrisMyhanaTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
                     <label for="qrisMyhanaUniqueCifQty">QRIS MyHana Unique CIF Quantity</label>
-                    <input type="number" class="form-control" id="qrisMyhanaUniqueCifQty" v-model.number="hanaForm.qrisMyhanaUniqueCifQty">
+                    <input type="number" class="form-control" id="qrisMyhanaUniqueCifQty" v-model.number="hanaForm.qrisMyhanaUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit MyHana Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit MyHana Data</button>
                 </form>
               </div>
             </div>
@@ -186,6 +186,7 @@ export default {
   },
   data() {
     return {
+      isSubmitting: false,
       toast: useToast(),
       lineForm: {
         startDt: new Date().toISOString().slice(0, 7),
@@ -310,6 +311,7 @@ export default {
       this.fetchHanaData();
     },
     async submitLineForm() {
+      this.isSubmitting = true;
       try {
         const submissionData = {
           ...this.lineForm,
@@ -320,6 +322,8 @@ export default {
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
+      } finally {
+        this.isSubmitting = false;
       }
     },
 
@@ -327,6 +331,7 @@ export default {
       this.$refs.qrisLineDataTable.fetchLineData();
     },
     async submitHanaForm() {
+      this.isSubmitting = true;
       try {
         const submissionData = {
           ...this.hanaForm,
@@ -337,6 +342,8 @@ export default {
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
+      } finally {
+        this.isSubmitting = false;
       }
     },
     triggerFileInput() {

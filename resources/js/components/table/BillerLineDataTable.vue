@@ -17,10 +17,10 @@
         <button type="submit" class="btn btn-primary btn-sm">Filter</button>
       </form>
     </div>
-    <div class="card-body">
+    <div class="card-body" style="position: relative;">
+      <loading-indicator v-if="lineIsLoading"></loading-indicator>
       <vue-good-table
         mode="remote"
-        :is-loading="lineIsLoading"
         :columns="lineColumns"
         :rows="lineData"
         :total-rows="lineTotalRecords"
@@ -38,6 +38,7 @@
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import { VueGoodTable } from 'vue-good-table-next';
 import axios from 'axios';
+import LoadingIndicator from '../LoadingIndicator.vue';
 import { handleError } from '@/utils/notify';
 import { useToast } from "vue-toastification";
 import Papa from 'papaparse';
@@ -46,6 +47,7 @@ export default {
   name: 'BillerLineDataTable',
   components: {
     VueGoodTable,
+    LoadingIndicator,
   },
   data() {
     return {
