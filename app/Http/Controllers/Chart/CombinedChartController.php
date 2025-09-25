@@ -19,11 +19,11 @@ class CombinedChartController extends Controller
         $startDate = $startMonth ? Carbon::parse($startMonth)->startOfMonth()->toDateString() : null;
         $endDate = $endMonth ? Carbon::parse($endMonth)->endOfMonth()->toDateString() : null;
 
-        $qrisQuery = DB::table('monthly_qris_trx')->select('START_DT', 'QRIS_TRX_AMT', 'QRIS_TRX_FREQ', 'QRIS_MYHANA_TRX_AMT', 'QRIS_MYHANA_TRX_FREQ');
-        $debitQuery = DB::table('monthly_debit_trx')->select('START_DT', 'DEBIT_TRX_AMT', 'DEBIT_TRX_FREQ', 'DEBIT_MYHANA_TRX_AMT', 'DEBIT_MYHANA_TRX_FREQ');
-        $billerQuery = DB::table('monthly_bill_trx')->select('START_DT', 'BILL_TRX_AMT', 'BILL_TRX_FREQ', 'BILL_MYHANA_TRX_AMT', 'BILL_MYHANA_TRX_FREQ');
-        $bifastQuery = DB::table('monthly_bifast_trx')->select('START_DT', 'BIFAST_TRX_AMT', 'BIFAST_TRX_FREQ', 'BIFAST_MYHANA_TRX_AMT', 'BIFAST_MYHANA_TRX_FREQ');
-        $rtolQuery = DB::table('monthly_trf_trx')->select('START_DT', 'TRF_OUT_TRX_AMT', 'TRF_OUT_TRX_FREQ', 'TRF_OUT_MYHANA_TRX_AMT', 'TRF_OUT_MYHANA_TRX_FREQ');
+        $qrisQuery = DB::table('monthly_qris_trx')->select('START_DT', 'QRIS_TRX_AMT', 'QRIS_TRX_FREQ', 'QRIS_MYHANA_TRX_AMT', 'QRIS_MYHANA_TRX_FREQ', 'QRIS_UNIQUE_CIF_QTY');
+        $debitQuery = DB::table('monthly_debit_trx')->select('START_DT', 'DEBIT_TRX_AMT', 'DEBIT_TRX_FREQ', 'DEBIT_MYHANA_TRX_AMT', 'DEBIT_MYHANA_TRX_FREQ', 'DEBIT_UNIQUE_CIF_QTY');
+        $billerQuery = DB::table('monthly_bill_trx')->select('START_DT', 'BILL_TRX_AMT', 'BILL_TRX_FREQ', 'BILL_MYHANA_TRX_AMT', 'BILL_MYHANA_TRX_FREQ', 'BILL_UNIQUE_CIF_QTY');
+        $bifastQuery = DB::table('monthly_bifast_trx')->select('START_DT', 'BIFAST_TRX_AMT', 'BIFAST_TRX_FREQ', 'BIFAST_MYHANA_TRX_AMT', 'BIFAST_MYHANA_TRX_FREQ', 'BIFAST_UNIQUE_CIF_QTY');
+        $rtolQuery = DB::table('monthly_trf_trx')->select('START_DT', 'TRF_OUT_TRX_AMT', 'TRF_OUT_TRX_FREQ', 'TRF_OUT_MYHANA_TRX_AMT', 'TRF_OUT_MYHANA_TRX_FREQ', 'TRF_OUT_UNIQUE_CIF_QTY');
 
         if ($startDate || $endDate) {
             if ($startDate) {
@@ -85,7 +85,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(75, 192, 192, 1)',
                         'backgroundColor' => 'rgba(75, 192, 192, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Debit_LineBank_Volume':
@@ -96,7 +95,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(54, 162, 235, 1)',
                         'backgroundColor' => 'rgba(54, 162, 235, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Qris_LineBank_Frequency':
@@ -139,7 +137,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(255, 159, 64, 1)',
                         'backgroundColor' => 'rgba(255, 159, 64, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Biller_LineBank_Frequency':
@@ -166,7 +163,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(153, 102, 255, 1)',
                         'backgroundColor' => 'rgba(153, 102, 255, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Debit_HanaBank_Volume':
@@ -177,7 +173,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(255, 159, 64, 1)',
                         'backgroundColor' => 'rgba(255, 159, 64, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Biller_HanaBank_Volume':
@@ -188,7 +183,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(201, 203, 207, 1)',
                         'backgroundColor' => 'rgba(201, 203, 207, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Qris_HanaBank_Frequency':
@@ -229,7 +223,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(255, 99, 71, 1)',
                         'backgroundColor' => 'rgba(255, 99, 71, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Bifast_LineBank_Frequency':
@@ -256,7 +249,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(60, 179, 113, 1)',
                         'backgroundColor' => 'rgba(60, 179, 113, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Bifast_HanaBank_Frequency':
@@ -277,7 +269,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(108, 117, 125, 1)',
                         'backgroundColor' => 'rgba(108, 117, 125, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Rtol_LineBank_Frequency':
@@ -304,7 +295,6 @@ class CombinedChartController extends Controller
                         'borderColor' => 'rgba(60, 179, 113, 1)',
                         'backgroundColor' => 'rgba(60, 179, 113, 0.6)',
                         'yAxisID' => 'y1',
-                        'barThickness' => 45,
                     ];
                     break;
                 case 'Rtol_HanaBank_Frequency':
@@ -314,6 +304,56 @@ class CombinedChartController extends Controller
                         'data' => $this->prepareData($rtolData, $labels, 'TRF_OUT_MYHANA_TRX_FREQ'),
                         'borderColor' => 'rgba(106, 90, 205, 1)',
                         'backgroundColor' => 'rgba(106, 90, 205, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Qris_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'QRIS Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($qrisData, $labels, 'QRIS_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(251, 191, 36, 1)',
+                        'backgroundColor' => 'rgba(251, 191, 36, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Debit_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'Debit Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($debitData, $labels, 'DEBIT_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(0, 0, 255, 1)',
+                        'backgroundColor' => 'rgba(0, 0, 255, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Biller_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'Biller Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($billerData, $labels, 'BILL_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(255, 140, 0, 1)',
+                        'backgroundColor' => 'rgba(255, 140, 0, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Bifast_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'BI-Fast Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($bifastData, $labels, 'BIFAST_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(220, 20, 60, 1)',
+                        'backgroundColor' => 'rgba(220, 20, 60, 0.2)',
+                        'yAxisID' => 'y',
+                    ];
+                    break;
+                case 'Rtol_Unique_CIF':
+                    $datasets[] = [
+                        'label' => 'RTOL Out - Unique CIF',
+                        'type' => 'line',
+                        'data' => $this->prepareData($rtolData, $labels, 'TRF_OUT_UNIQUE_CIF_QTY'),
+                        'borderColor' => 'rgba(148, 0, 211, 1)',
+                        'backgroundColor' => 'rgba(148, 0, 211, 0.2)',
                         'yAxisID' => 'y',
                     ];
                     break;

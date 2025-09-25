@@ -1,20 +1,19 @@
 <template>
   <div>
     <div class="row mb-3">
-      <div class="col-md-3">
-        <multiselect
-          v-model="selectedCharts"
-          :options="chartOptions"
-          :multiple="true"
-          group-values="options"
-          group-label="group"
-          :group-select="true"
-          placeholder="Select charts"
-          @select="updateChart"
-          @remove="updateChart"
-          :disabled="isLoading"
-        ></multiselect>
+      <div class="col-md-12">
+        <div v-for="group in chartOptions" :key="group.group" class="mb-2">
+          <h6>{{ group.group.replace(/-----/g, '').trim() }}</h6>
+          <div class="d-flex flex-wrap">
+            <div class="form-check form-check-inline mr-3" v-for="option in group.options" :key="option">
+              <input class="form-check-input" type="checkbox" :id="option" :value="option" v-model="selectedCharts" @change="updateChart">
+              <label class="form-check-label" :for="option">{{ option.replace(/_/g, ' ') }}</label>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="row mb-3">
       <div class="col-md-2">
         <input type="month" class="form-control" v-model="startMonth" @change="updateChart" :disabled="isLoading">
       </div>
@@ -44,13 +43,11 @@ import Chart from 'chart.js/auto';
 import trendline from 'chartjs-plugin-trendline';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chartjs-adapter-date-fns';
-import Multiselect from 'vue-multiselect';
 import axios from 'axios';
 import LoadingIndicator from '../LoadingIndicator.vue';
 
 export default {
   components: {
-    Multiselect,
     LoadingIndicator,
   },
   data() {
@@ -100,6 +97,16 @@ export default {
             'Bifast_HanaBank_Frequency',
             'Rtol_HanaBank_Frequency',
           ]
+        },
+        {
+          group: '----- Unique CIF -----',
+          options: [
+            'Qris_Unique_CIF',
+            'Debit_Unique_CIF',
+            'Biller_Unique_CIF',
+            'Bifast_Unique_CIF',
+            'Rtol_Unique_CIF',
+          ]
         }
       ],
       chartData: {
@@ -117,8 +124,18 @@ export default {
       if (this.chart) {
         this.chart.destroy();
       }
-      const hasFrequency = this.selectedCharts.some(chart => chart.toLowerCase().includes('_frequency'));
+      const hasFrequency = this.selectedCharts.some(chart => chart.toLowerCase().includes('_frequency') || chart.toLowerCase().includes('_cif'));
       const hasVolume = this.selectedCharts.some(chart => chart.toLowerCase().includes('_volume'));
+      const barCharts = this.selectedCharts.filter(chart => chart.toLowerCase().includes('volume'));
+      const numBarCharts = barCharts.length;
+      const barThickness = numBarCharts > 0 ? Math.max(10, 60 / numBarCharts) : 10;
+
+      this.chartData.datasets.forEach(dataset => {
+        if (dataset.type === 'bar') {
+          dataset.barThickness = barThickness;
+        }
+      });
+
       const ctx = document.getElementById('combinedChart').getContext('2d');
       this.chart = new Chart(ctx, {
         data: this.chartData,
@@ -127,20 +144,22 @@ export default {
           maintainAspectRatio: false,
           plugins: {
             datalabels: {
-              formatter: (value) => {
-                const yValue = value.y;
+              display: true,
+              formatter: (value, context) => {
+                const yValue = context.dataset.data[context.dataIndex].y;
                 if (yValue === null || yValue === undefined) return '';
-                if (yValue >= 1000000000) {
-                  return (yValue / 1000000000).toFixed(1) + 'B';
-                }
-                if (yValue >= 1000000) {
-                  return (yValue / 1000000).toFixed(1) + 'M';
-                }
-                if (yValue >= 1000) {
-                  return (yValue / 1000).toFixed(1) + 'K';
-                }
-                return yValue;
-              }
+                return this.formatLargeNumber(yValue);
+              },
+              align: (context) => {
+                return context.dataset.type === 'bar' ? 'center' : 'top';
+              },
+              anchor: (context) => {
+                return context.dataset.type === 'bar' ? 'center' : 'end';
+              },
+              color: 'black',
+              font: {
+                weight: 'bold'
+              },
             },
           },
           scales: {
@@ -165,12 +184,7 @@ export default {
                 text: 'Frequency / Unique CIF'
               },
               ticks: {
-                callback: function(value) {
-                  if (value >= 1000) {
-                    return value / 1000 + 'K';
-                  }
-                  return value;
-                }
+                callback: (value) => this.formatLargeNumber(value)
               }
             },
             y1: {
@@ -185,18 +199,7 @@ export default {
                 text: 'Transaction Amount'
               },
               ticks: {
-                callback: function(value) {
-                  if (value >= 1000000000) {
-                    return value / 1000000000 + 'B';
-                  }
-                  if (value >= 1000000) {
-                    return value / 1000000 + 'M';
-                  }
-                  if (value >= 1000) {
-                    return value / 1000 + 'K';
-                  }
-                  return value;
-                }
+                callback: (value) => this.formatLargeNumber(value)
               }
             },
           },
@@ -252,8 +255,17 @@ export default {
         this.isLoading = false;
       }
     },
+    formatLargeNumber(num) {
+      const absNum = Math.abs(num);
+      if (absNum >= 1e9) {
+        return (num / 1e9).toFixed(1) + 'B';
+      } else if (absNum >= 1e6) {
+        return (num / 1e6).toFixed(1) + 'M';
+      } else if (absNum >= 1e3) {
+        return (num / 1e3).toFixed(1) + 'K';
+      }
+      return num.toString();
+    },
   },
 };
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
