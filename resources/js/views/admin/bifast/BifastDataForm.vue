@@ -64,10 +64,10 @@
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="bifastDataTabs" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="line-tab" data-toggle="tab" data-target="#line" type="button" role="tab" aria-controls="line" aria-selected="true">Bifast Line</button>
+        <button class="nav-link active" id="line-tab" data-toggle="tab" data-target="#line" type="button" role="tab" aria-controls="line" aria-selected="true">Bifast Line Bank</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="hana-tab" data-toggle="tab" data-target="#hana" type="button" role="tab" aria-controls="hana" aria-selected="false">Bifast MyHana</button>
+        <button class="nav-link" id="hana-tab" data-toggle="tab" data-target="#hana" type="button" role="tab" aria-controls="hana" aria-selected="false">Bifast Hana Bank</button>
       </li>
     </ul>
 
@@ -79,7 +79,10 @@
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Input Bifast Line Data</h6>
+                <div class="d-flex align-items-center">
+                  <h6 class="m-0 font-weight-bold text-primary">Input Bifast Line Data</h6>
+                  &nbsp;&nbsp;<img src="/images/lineBankLogo.png" alt="Line Bank Logo" style="height: 30px;">
+                </div>
               </div>
               <div class="card-body">
                 <form @submit.prevent="submitLineForm">
@@ -99,7 +102,7 @@
                     <label for="bifastUniqueCifQty">Bifast Unique CIF Quantity</label>
                     <input type="number" class="form-control" id="bifastUniqueCifQty" v-model.number="lineForm.bifastUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Bank</button>
                 </form>
               </div>
             </div>
@@ -116,7 +119,10 @@
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Input Bifast MyHana Data</h6>
+                <div class="d-flex align-items-center">
+                  <h6 class="m-0 font-weight-bold text-primary">Input Bifast Hana Bank</h6>
+                  &nbsp;&nbsp;<img src="/images/hanaBankLogo.png" alt="Hana Bank Logo" style="height: 30px; margin-right: 10px;">
+                </div>
               </div>
               <div class="card-body">
                 <form @submit.prevent="submitHanaForm">
@@ -125,43 +131,24 @@
                     <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="bifastMyhanaTrxFreq">Bifast MyHana Transaction Frequency</label>
+                    <label for="bifastMyhanaTrxFreq">Bifast Transaction Frequency</label>
                     <input type="number" class="form-control" id="bifastMyhanaTrxFreq" v-model.number="hanaForm.bifastMyhanaTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="bifastMyhanaTrxAmt">Bifast MyHana Transaction Amount</label>
+                    <label for="bifastMyhanaTrxAmt">Bifast Transaction Amount</label>
                     <input type="number" class="form-control" id="bifastMyhanaTrxAmt" v-model.number="hanaForm.bifastMyhanaTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="bifastMyhanaUniqueCifQty">Bifast MyHana Unique CIF Quantity</label>
+                    <label for="bifastMyhanaUniqueCifQty">Bifast Unique CIF Quantity</label>
                     <input type="number" class="form-control" id="bifastMyhanaUniqueCifQty" v-model.number="hanaForm.bifastMyhanaUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit MyHana Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Hana Bank</button>
                 </form>
               </div>
             </div>
           </div>
           <div class="col-lg-12">
-            <div class="card shadow mb-4">
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Bifast MyHana Data</h6>
-                <button class="btn btn-success btn-sm" @click="exportHanaData">Export CSV</button>
-              </div>
-              <div class="card-body">
-                <vue-good-table
-                  mode="remote"
-                  :is-loading="hanaIsLoading"
-                  :columns="hanaColumns"
-                  :rows="hanaData"
-                  :total-rows="hanaTotalRecords"
-                  :pagination-options="{ enabled: true }"
-                  @page-change="onHanaPageChange"
-                  @per-page-change="onHanaPerPageChange"
-                  @column-filter="onHanaFilterChange"
-                  @sort-change="onHanaSortChange"
-                />
-              </div>
-            </div>
+            <BifastHanaDataTable ref="bifastHanaDataTable" />
           </div>
         </div>
       </div>
@@ -173,6 +160,7 @@
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import { VueGoodTable } from 'vue-good-table-next';
 import BifastLineDataTable from '@/components/table/BifastLineDataTable.vue';
+import BifastHanaDataTable from '@/components/table/BifastHanaDataTable.vue';
 import axios from 'axios';
 import { handleError } from '@/utils/notify';
 import { useToast } from "vue-toastification";
@@ -183,6 +171,7 @@ export default {
   components: {
     VueGoodTable,
     BifastLineDataTable,
+    BifastHanaDataTable,
   },
   data() {
     return {
@@ -213,60 +202,9 @@ export default {
         'BIFAST_MYHANA_UNIQUE_CIF_QTY',
       ],
       isDragging: false,
-      hanaData: [],
-      hanaTotalRecords: 0,
-      hanaIsLoading: false,
-      hanaServerParams: {
-        page: 1,
-        per_page: 10,
-        start_dt: '',
-        sort: [],
-      },
-      hanaColumns: [
-        {
-          label: 'Start Date',
-          field: 'startDt',
-          formatFn: this.formatMonthYear,
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Filter by date...',
-          },
-        },
-        {
-          label: 'Transaction Frequency',
-          field: 'bifastMyhanaTrxFreq',
-          tdClass: 'text-right',
-          formatFn: this.formatCurrency,
-        },
-        {
-          label: 'Transaction Amount',
-          field: 'bifastMyhanaTrxAmt',
-          tdClass: 'text-right',
-          formatFn: this.formatCurrency,
-        },
-        {
-          label: 'Unique CIF Quantity',
-          field: 'bifastMyhanaUniqueCifQty',
-          tdClass: 'text-right',
-          formatFn: this.formatCurrency,
-        },
-      ],
     }
   },
-  mounted() {
-    this.fetchHanaData();
-  },
   methods: {
-    formatMonthYear(value) {
-      if (!value) return '';
-      const date = new Date(value);
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${month}/${year}`;
-    },
-    formatCurrency(value) {
-      return new Intl.NumberFormat('id-ID').format(value);
-    },
     downloadTemplate() {
       const csv = Papa.unparse([this.expectedCsvHeaders]);
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -276,39 +214,6 @@ export default {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    },
-    async fetchHanaData() {
-      this.hanaIsLoading = true;
-      try {
-        const { page, per_page, start_dt, sort } = this.hanaServerParams;
-        let url = `/bifast/bifast-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}`;
-        if (sort.length > 0 && sort[0].field) {
-          url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
-        }
-        const response = await axios.get(url);
-        this.hanaData = response.data.data;
-        this.hanaTotalRecords = response.data.total;
-      } catch (error) {
-        handleError(error, this.toast);
-      } finally {
-        this.hanaIsLoading = false;
-      }
-    },
-    onHanaPageChange(params) {
-      this.hanaServerParams.page = params.currentPage;
-      this.fetchHanaData();
-    },
-    onHanaPerPageChange(params) {
-      this.hanaServerParams.per_page = params.currentPerPage;
-      this.fetchHanaData();
-    },
-    onHanaFilterChange(params) {
-      this.hanaServerParams.start_dt = params.columnFilters.startDt;
-      this.fetchHanaData();
-    },
-    onHanaSortChange(params) {
-      this.hanaServerParams.sort = params;
-      this.fetchHanaData();
     },
     async submitLineForm() {
       this.isSubmitting = true;
@@ -337,7 +242,7 @@ export default {
           startDt: `${this.hanaForm.startDt}-01`
         };
         const response = await axios.post('bifast/store-bifast-hana-data', submissionData);
-        this.fetchHanaData();
+        this.$refs.bifastHanaDataTable.fetchHanaData();
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
@@ -416,24 +321,9 @@ export default {
       try {
         const response = await axios.post('/bifast/upload', { data: this.csvData });
         this.fetchLineData();
-        this.fetchHanaData();
+        this.$refs.bifastHanaDataTable.fetchHanaData();
         this.clearCsvFile();
         this.toast.success(response.data.message);
-      } catch (error) {
-        handleError(error, this.toast);
-      }
-    },
-    async exportHanaData() {
-      try {
-        const response = await axios.get('/bifast/bifast-hana-data?per_page=-1');
-        const csv = Papa.unparse(response.data.data);
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'bifast-hana-data.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
       } catch (error) {
         handleError(error, this.toast);
       }

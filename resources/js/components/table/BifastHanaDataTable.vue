@@ -3,35 +3,35 @@
     <div class="card-header py-3">
       <div class="d-flex flex-row align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-          <h6 class="m-0 font-weight-bold text-primary">Bifast Line Bank</h6>
-          &nbsp;&nbsp;<img src="/images/lineBankLogo.png" alt="Line Bank Logo" style="height: 30px;">
+          <h6 class="m-0 font-weight-bold text-primary">Bifast Hana Bank</h6>
+          &nbsp;&nbsp;<img src="/images/hanaBankLogo.png" alt="Hana Bank Logo" style="height: 30px; margin-right: 10px;">
         </div>
-        <button class="btn btn-success btn-sm" @click="exportLineData">Export CSV</button>
+        <button class="btn btn-success btn-sm" @click="exportHanaData">Export CSV</button>
       </div>
-      <form @submit.prevent="applyLineFilters" class="form-inline mt-3">
+      <form @submit.prevent="applyHanaFilters" class="form-inline mt-3">
         <div class="form-group mr-3">
-          <label for="line_start_month" class="mr-2">Start Month</label>
-          <input type="month" class="form-control form-control-sm" id="line_start_month" v-model="line_start_month">
+          <label for="hana_start_month" class="mr-2">Start Month</label>
+          <input type="month" class="form-control form-control-sm" id="hana_start_month" v-model="hana_start_month">
         </div>
         <div class="form-group mr-3">
-          <label for="line_end_month" class="mr-2">End Month</label>
-          <input type="month" class="form-control form-control-sm" id="line_end_month" v-model="line_end_month">
+          <label for="hana_end_month" class="mr-2">End Month</label>
+          <input type="month" class="form-control form-control-sm" id="hana_end_month" v-model="hana_end_month">
         </div>
         <button type="submit" class="btn btn-primary btn-sm">Filter</button>
       </form>
     </div>
-    <div class="card-body" style="position: relative;">
-      <loading-indicator v-if="lineIsLoading"></loading-indicator>
+    <div class="card-body">
       <vue-good-table
         mode="remote"
-        :columns="lineColumns"
-        :rows="lineData"
-        :total-rows="lineTotalRecords"
+        :is-loading="hanaIsLoading"
+        :columns="hanaColumns"
+        :rows="hanaData"
+        :total-rows="hanaTotalRecords"
         :pagination-options="{ enabled: true }"
-        @page-change="onLinePageChange"
-        @per-page-change="onLinePerPageChange"
-        @column-filter="onLineFilterChange"
-        @sort-change="onLineSortChange"
+        @page-change="onHanaPageChange"
+        @per-page-change="onHanaPerPageChange"
+        @column-filter="onHanaFilterChange"
+        @sort-change="onHanaSortChange"
       />
     </div>
   </div>
@@ -41,26 +41,24 @@
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import { VueGoodTable } from 'vue-good-table-next';
 import axios from 'axios';
-import LoadingIndicator from '../LoadingIndicator.vue';
 import { handleError } from '@/utils/notify';
 import { useToast } from "vue-toastification";
 import Papa from 'papaparse';
 
 export default {
-  name: 'BifastLineDataTable',
+  name: 'BifastHanaDataTable',
   components: {
     VueGoodTable,
-    LoadingIndicator,
   },
   data() {
     return {
-      line_start_month: '',
-      line_end_month: '',
+      hana_start_month: '',
+      hana_end_month: '',
       toast: useToast(),
-      lineData: [],
-      lineTotalRecords: 0,
-      lineIsLoading: false,
-      lineServerParams: {
+      hanaData: [],
+      hanaTotalRecords: 0,
+      hanaIsLoading: false,
+      hanaServerParams: {
         page: 1,
         per_page: 10,
         start_dt: '',
@@ -68,9 +66,9 @@ export default {
         start_month: '',
         end_month: '',
       },
-      lineColumns: [
+      hanaColumns: [
         {
-          label: 'Start Date (MM/YYYY)',
+          label: 'Start Date',
           field: 'startDt',
           formatFn: this.formatMonthYear,
           filterOptions: {
@@ -80,19 +78,19 @@ export default {
         },
         {
           label: 'Transaction Frequency',
-          field: 'bifastTrxFreq',
+          field: 'bifastMyhanaTrxFreq',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Transaction Amount',
-          field: 'bifastTrxAmt',
+          field: 'bifastMyhanaTrxAmt',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
         {
           label: 'Unique CIF Quantity',
-          field: 'bifastUniqueCifQty',
+          field: 'bifastMyhanaUniqueCifQty',
           tdClass: 'text-right',
           formatFn: this.formatCurrency,
         },
@@ -100,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchLineData();
+    this.fetchHanaData();
   },
   methods: {
     formatMonthYear(value) {
@@ -113,52 +111,52 @@ export default {
     formatCurrency(value) {
       return new Intl.NumberFormat('id-ID').format(value);
     },
-    applyLineFilters() {
-      this.lineServerParams.start_month = this.line_start_month;
-      this.lineServerParams.end_month = this.line_end_month;
-      this.fetchLineData();
+    applyHanaFilters() {
+      this.hanaServerParams.start_month = this.hana_start_month;
+      this.hanaServerParams.end_month = this.hana_end_month;
+      this.fetchHanaData();
     },
-    async fetchLineData() {
-      this.lineIsLoading = true;
+    async fetchHanaData() {
+      this.hanaIsLoading = true;
       try {
-        const { page, per_page, start_dt, sort, start_month, end_month } = this.lineServerParams;
-        let url = `/bifast/bifast-line-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
+        const { page, per_page, start_dt, sort, start_month, end_month } = this.hanaServerParams;
+        let url = `/bifast/bifast-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}&start_month=${start_month}&end_month=${end_month}`;
         if (sort.length > 0 && sort[0].field) {
           url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
         }
         const response = await axios.get(url);
-        this.lineData = response.data.data;
-        this.lineTotalRecords = response.data.total;
+        this.hanaData = response.data.data;
+        this.hanaTotalRecords = response.data.total;
       } catch (error) {
         handleError(error, this.toast);
       } finally {
-        this.lineIsLoading = false;
+        this.hanaIsLoading = false;
       }
     },
-    onLinePageChange(params) {
-      this.lineServerParams.page = params.currentPage;
-      this.fetchLineData();
+    onHanaPageChange(params) {
+      this.hanaServerParams.page = params.currentPage;
+      this.fetchHanaData();
     },
-    onLinePerPageChange(params) {
-      this.lineServerParams.per_page = params.currentPerPage;
-      this.fetchLineData();
+    onHanaPerPageChange(params) {
+      this.hanaServerParams.per_page = params.currentPerPage;
+      this.fetchHanaData();
     },
-    onLineFilterChange(params) {
-      this.lineServerParams.start_dt = params.columnFilters.startDt;
-      this.fetchLineData();
+    onHanaFilterChange(params) {
+      this.hanaServerParams.start_dt = params.columnFilters.startDt;
+      this.fetchHanaData();
     },
-    onLineSortChange(params) {
-      this.lineServerParams.sort = params;
-      this.fetchLineData();
+    onHanaSortChange(params) {
+      this.hanaServerParams.sort = params;
+      this.fetchHanaData();
     },
-    async exportLineData() {
+    async exportHanaData() {
       try {
-        const response = await axios.get('/bifast/bifast-line-data?per_page=-1');
+        const response = await axios.get('/bifast/bifast-hana-data?per_page=-1');
         const csv = Papa.unparse(response.data.data);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'bifast-line-data.csv');
+        link.setAttribute('download', 'bifast-hana-data.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

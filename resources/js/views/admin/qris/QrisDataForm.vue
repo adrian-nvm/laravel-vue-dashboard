@@ -64,10 +64,10 @@
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="qrisDataTabs" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="line-tab" data-toggle="tab" data-target="#line" type="button" role="tab" aria-controls="line" aria-selected="true">QRIS Line</button>
+        <button class="nav-link active" id="line-tab" data-toggle="tab" data-target="#line" type="button" role="tab" aria-controls="line" aria-selected="true">QRIS Line Bank</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="hana-tab" data-toggle="tab" data-target="#hana" type="button" role="tab" aria-controls="hana" aria-selected="false">QRIS MyHana</button>
+        <button class="nav-link" id="hana-tab" data-toggle="tab" data-target="#hana" type="button" role="tab" aria-controls="hana" aria-selected="false">QRIS Hana Bank</button>
       </li>
     </ul>
 
@@ -79,7 +79,10 @@
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Input QRIS Line Data</h6>
+                <div class="d-flex align-items-center">
+                  <h6 class="m-0 font-weight-bold text-primary">Input QRIS Line Data</h6>
+                  &nbsp;&nbsp;<img src="/images/lineBankLogo.png" alt="Line Bank Logo" style="height: 30px;">
+                </div>
               </div>
               <div class="card-body">
                 <form @submit.prevent="submitLineForm">
@@ -99,7 +102,7 @@
                     <label for="qrisUniqueCifQty">QRIS Unique CIF Quantity</label>
                     <input type="number" class="form-control" id="qrisUniqueCifQty" v-model.number="lineForm.qrisUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Line Bank</button>
                 </form>
               </div>
             </div>
@@ -116,7 +119,10 @@
           <div class="col-lg-12">
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Input QRIS MyHana Data</h6>
+                <div class="d-flex align-items-center">
+                  <h6 class="m-0 font-weight-bold text-primary">Input QRIS Hana Bank</h6>
+                  &nbsp;&nbsp;<img src="/images/hanaBankLogo.png" alt="Hana Bank Logo" style="height: 30px; margin-right: 10px;">
+                </div>
               </div>
               <div class="card-body">
                 <form @submit.prevent="submitHanaForm">
@@ -125,43 +131,24 @@
                     <input type="month" class="form-control" id="hanaStartDt" v-model="hanaForm.startDt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="qrisMyhanaTrxFreq">QRIS MyHana Transaction Frequency</label>
+                    <label for="qrisMyhanaTrxFreq">QRIS Transaction Frequency</label>
                     <input type="number" class="form-control" id="qrisMyhanaTrxFreq" v-model.number="hanaForm.qrisMyhanaTrxFreq" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="qrisMyhanaTrxAmt">QRIS MyHana Transaction Amount</label>
+                    <label for="qrisMyhanaTrxAmt">QRIS Transaction Amount</label>
                     <input type="number" class="form-control" id="qrisMyhanaTrxAmt" v-model.number="hanaForm.qrisMyhanaTrxAmt" :disabled="isSubmitting">
                   </div>
                   <div class="form-group">
-                    <label for="qrisMyhanaUniqueCifQty">QRIS MyHana Unique CIF Quantity</label>
+                    <label for="qrisMyhanaUniqueCifQty">QRIS Unique CIF Quantity</label>
                     <input type="number" class="form-control" id="qrisMyhanaUniqueCifQty" v-model.number="hanaForm.qrisMyhanaUniqueCifQty" :disabled="isSubmitting">
                   </div>
-                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit MyHana Data</button>
+                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">Submit Hana Bank</button>
                 </form>
               </div>
             </div>
           </div>
           <div class="col-lg-12">
-            <div class="card shadow mb-4">
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">QRIS MyHana Data</h6>
-                <button class="btn btn-success btn-sm" @click="exportHanaData">Export CSV</button>
-              </div>
-              <div class="card-body">
-                <vue-good-table
-                  mode="remote"
-                  :is-loading="hanaIsLoading"
-                  :columns="hanaColumns"
-                  :rows="hanaData"
-                  :total-rows="hanaTotalRecords"
-                  :pagination-options="{ enabled: true }"
-                  @page-change="onHanaPageChange"
-                  @per-page-change="onHanaPerPageChange"
-                  @column-filter="onHanaFilterChange"
-                  @sort-change="onHanaSortChange"
-                />
-              </div>
-            </div>
+            <QrisHanaDataTable ref="qrisHanaDataTable" />
           </div>
         </div>
       </div>
@@ -173,6 +160,7 @@
 import 'vue-good-table-next/dist/vue-good-table-next.css'
 import { VueGoodTable } from 'vue-good-table-next';
 import QrisLineDataTable from '@/components/table/QrisLineDataTable.vue';
+import QrisHanaDataTable from '@/components/table/QrisHanaDataTable.vue';
 import axios from 'axios';
 import { handleError } from '@/utils/notify';
 import { useToast } from "vue-toastification";
@@ -183,6 +171,7 @@ export default {
   components: {
     VueGoodTable,
     QrisLineDataTable,
+    QrisHanaDataTable,
   },
   data() {
     return {
@@ -213,60 +202,9 @@ export default {
         'QRIS_MYHANA_UNIQUE_CIF_QTY',
       ],
       isDragging: false,
-      hanaData: [],
-      hanaTotalRecords: 0,
-      hanaIsLoading: false,
-      hanaServerParams: {
-        page: 1,
-        per_page: 10,
-        start_dt: '',
-        sort: [],
-      },
-      hanaColumns: [
-        {
-          label: 'Start Date',
-          field: 'startDt',
-          formatFn: this.formatMonthYear,
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Filter by date...',
-          },
-        },
-        {
-          label: 'Transaction Frequency',
-          field: 'qrisMyhanaTrxFreq',
-          tdClass: 'text-right',
-          formatFn: this.formatCurrency,
-        },
-        {
-          label: 'Transaction Amount',
-          field: 'qrisMyhanaTrxAmt',
-          tdClass: 'text-right',
-          formatFn: this.formatCurrency,
-        },
-        {
-          label: 'Unique CIF Quantity',
-          field: 'qrisMyhanaUniqueCifQty',
-          tdClass: 'text-right',
-          formatFn: this.formatCurrency,
-        },
-      ],
     }
   },
-  mounted() {
-    this.fetchHanaData();
-  },
   methods: {
-    formatMonthYear(value) {
-      if (!value) return '';
-      const date = new Date(value);
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${month}/${year}`;
-    },
-    formatCurrency(value) {
-      return new Intl.NumberFormat('id-ID').format(value);
-    },
     downloadTemplate() {
       const csv = Papa.unparse([this.expectedCsvHeaders]);
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -276,39 +214,6 @@ export default {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    },
-    async fetchHanaData() {
-      this.hanaIsLoading = true;
-      try {
-        const { page, per_page, start_dt, sort } = this.hanaServerParams;
-        let url = `/qris/qris-hana-data?page=${page}&per_page=${per_page}&start_dt=${start_dt}`;
-        if (sort.length > 0 && sort[0].field) {
-          url += `&sort_field=${sort[0].field}&sort_type=${sort[0].type}`;
-        }
-        const response = await axios.get(url);
-        this.hanaData = response.data.data;
-        this.hanaTotalRecords = response.data.total;
-      } catch (error) {
-        handleError(error, this.toast);
-      } finally {
-        this.hanaIsLoading = false;
-      }
-    },
-    onHanaPageChange(params) {
-      this.hanaServerParams.page = params.currentPage;
-      this.fetchHanaData();
-    },
-    onHanaPerPageChange(params) {
-      this.hanaServerParams.per_page = params.currentPerPage;
-      this.fetchHanaData();
-    },
-    onHanaFilterChange(params) {
-      this.hanaServerParams.start_dt = params.columnFilters.startDt;
-      this.fetchHanaData();
-    },
-    onHanaSortChange(params) {
-      this.hanaServerParams.sort = params;
-      this.fetchHanaData();
     },
     async submitLineForm() {
       this.isSubmitting = true;
@@ -326,7 +231,6 @@ export default {
         this.isSubmitting = false;
       }
     },
-
     fetchLineData() {
       this.$refs.qrisLineDataTable.fetchLineData();
     },
@@ -338,7 +242,7 @@ export default {
           startDt: `${this.hanaForm.startDt}-01`
         };
         const response = await axios.post('qris/store-qris-hana-data', submissionData);
-        this.fetchHanaData();
+        this.$refs.qrisHanaDataTable.fetchHanaData();
         this.toast.success(response.data.message);
       } catch (error) {
         handleError(error, this.toast);
@@ -417,24 +321,9 @@ export default {
       try {
         const response = await axios.post('/qris/upload', { data: this.csvData });
         this.fetchLineData();
-        this.fetchHanaData();
+        this.$refs.qrisHanaDataTable.fetchHanaData();
         this.clearCsvFile();
         this.toast.success(response.data.message);
-      } catch (error) {
-        handleError(error, this.toast);
-      }
-    },
-    async exportHanaData() {
-      try {
-        const response = await axios.get('/qris/qris-hana-data?per_page=-1');
-        const csv = Papa.unparse(response.data.data);
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute('download', 'qris-hana-data.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
       } catch (error) {
         handleError(error, this.toast);
       }

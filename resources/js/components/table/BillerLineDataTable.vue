@@ -2,7 +2,10 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <div class="d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Biller Line Data</h6>
+        <div class="d-flex align-items-center">
+          <h6 class="m-0 font-weight-bold text-primary">Biller Line Bank</h6>
+          &nbsp;&nbsp;<img src="/images/lineBankLogo.png" alt="Line Bank Logo" style="height: 30px;">
+        </div>
         <button class="btn btn-success btn-sm" @click="exportLineData">Export CSV</button>
       </div>
       <form @submit.prevent="applyLineFilters" class="form-inline mt-3">

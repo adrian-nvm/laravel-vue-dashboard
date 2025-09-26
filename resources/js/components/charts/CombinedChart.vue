@@ -2,7 +2,10 @@
   <div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <h5>LineBank</h5>
+        <div class="d-flex align-items-center mb-2">
+          <h5>LineBank</h5>
+           &nbsp; &nbsp;<img src="/images/lineBankLogo.png" alt="Line Bank Logo" style="height: 30px; margin-right: 10px;">
+        </div>
         <div v-for="group in lineBankChartOptions" :key="group.group" class="mb-2">
           <h6>{{ group.group.replace(/-----|LineBank/g, '').trim() }}</h6>
           <div class="d-flex flex-wrap">
@@ -14,7 +17,10 @@
         </div>
       </div>
       <div class="col-md-6">
-        <h5>HanaBank</h5>
+        <div class="d-flex align-items-center mb-2">
+          <h5>HanaBank</h5>
+           &nbsp; &nbsp;<img src="/images/hanaBankLogo.png" alt="Hana Bank Logo" style="height: 30px; margin-right: 10px;">
+        </div>
         <div v-for="group in hanaBankChartOptions" :key="group.group" class="mb-2">
           <h6>{{ group.group.replace(/-----|HanaBank/g, '').trim() }}</h6>
           <div class="d-flex flex-wrap">

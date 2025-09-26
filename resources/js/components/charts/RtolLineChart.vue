@@ -2,9 +2,12 @@
     <div class="rtol-chart-container">
         <!-- Chart Section -->
         <div class="chart-section">
-            <div class="chart-header mb-3 d-flex justify-content-between align-items-center">
-                <h4>RTOL Out - Transaction Analytics (MyLine)</h4>
-                <div class="col-md-3">
+    <div class="chart-header mb-3 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <h4>RTOL Out - Transaction Analytics (MyLine)</h4>
+          &nbsp;&nbsp;<img src="/images/lineBankLogo.png" alt="Line Bank Logo" style="height: 30px;">
+        </div>
+        <div class="col-md-3">
                     <select class="form-control" v-model="selectedChartType">
                         <option value="line">Line/Bar Chart</option>
                         <option value="pie">Pie Chart</option>
@@ -27,9 +30,10 @@
 <script>
 import { Chart, registerables } from 'chart.js';
 import trendline from 'chartjs-plugin-trendline';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 // Register Chart.js components and the trendline plugin
-Chart.register(...registerables, trendline);
+Chart.register(...registerables, trendline, ChartDataLabels);
 
 export default {
     name: 'RtolLineChart',
@@ -200,6 +204,24 @@ export default {
                                     return `${label}: ${this.formatLargeNumber(value)}`;
                                 }
                             }
+                        },
+                        datalabels: {
+                            backgroundColor: (context) => {
+                                return context.dataset.backgroundColor[context.dataIndex];
+                            },
+                            borderColor: 'white',
+                            borderRadius: 4,
+                            borderWidth: 2,
+                            color: 'black',
+                            font: {
+                                weight: 'bold'
+                            },
+                            padding: 4,
+                            formatter: (value, context) => {
+                                const total = context.chart.getDatasetMeta(0).total;
+                                const percentage = total > 0 ? (value / total * 100).toFixed(1) + '%' : '0%';
+                                return percentage;
+                            },
                         }
                     }
                 };
@@ -228,6 +250,33 @@ export default {
                                     const value = context.parsed.y || 0;
                                     return `${datasetLabel}: ${this.formatLargeNumber(value)}`;
                                 }
+                            }
+                        },
+                        datalabels: {
+                            display: true,
+                            formatter: (value, context) => {
+                                if (value === null || value === undefined) return '';
+                                return this.formatLargeNumber(value);
+                            },
+                            align: (context) => {
+                                return context.dataset.type === 'bar' ? 'center' : 'top';
+                            },
+                            anchor: (context) => {
+                                return context.dataset.type === 'bar' ? 'center' : 'end';
+                            },
+                            backgroundColor: (context) => {
+                                return context.dataset.borderColor;
+                            },
+                            borderRadius: 4,
+                            color: 'white',
+                            font: {
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 4,
+                                bottom: 4,
+                                left: 8,
+                                right: 8
                             }
                         }
                     },
@@ -263,40 +312,7 @@ export default {
             this.chart = new Chart(ctx, {
                 type: type,
                 data: chartData,
-                options: options,
-                plugins: type !== 'pie' ? [{
-                    afterDatasetsDraw: (chart) => {
-                        const ctx = chart.ctx;
-                        chart.data.datasets.forEach((dataset, i) => {
-                            const meta = chart.getDatasetMeta(i);
-                            if (!meta.hidden) {
-                                meta.data.forEach((element, index) => {
-                                    const data = dataset.data[index];
-                                    const fontSize = 15;
-                                    const fontStyle = 'bold';
-                                    ctx.font = `${fontStyle} ${fontSize}px Arial`;
-                                    ctx.textAlign = 'center';
-                                    ctx.textBaseline = 'bottom';
-                                    let formattedValue;
-                                    let xPos = element.x;
-                                    let yPos;
-                                    if (dataset.type === 'bar') {
-                                        formattedValue = this.formatLargeNumber(data);
-                                        yPos = element.y + element.height - 5;
-                                        ctx.fillStyle = 'rgb(0, 0, 0)';
-                                        ctx.fillText(formattedValue, xPos, yPos);
-                                    } else if (dataset.type === 'line') {
-                                        formattedValue = this.formatLargeNumber(data);
-                                        yPos = element.y - 15;
-                                        ctx.fillStyle = 'rgb(0, 0, 0)';
-                                        ctx.textBaseline = 'bottom';
-                                        ctx.fillText(formattedValue, xPos, yPos);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }] : []
+                options: options
             });
         },
         formatLargeNumber(num) {
